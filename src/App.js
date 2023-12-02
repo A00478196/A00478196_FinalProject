@@ -5,44 +5,41 @@ import {
   Link,
   Routes
 } from "react-router-dom";
+import Navbar from "./components/common/Navbar";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./styles/main.css"
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ArtsCollection from "./pages/ArtsCollection";
+import ArtDetail from "./pages/ArtDetail";
+import Create from "./pages/arts/Create";
+import List from "./pages/arts/List";
+import Edit from "./pages/arts/Edit";
+import PaymentDetails from "./pages/PaymentDetails";
 
 function App() {
   return (
    
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+      <>
+      <Navbar />
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-            <Routes>
-          <Route path="/" element={<About />} />
-          <Route path="/myTown" element={<About />} />
-       </Routes>
-      </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
+          <Route path="/browse-arts" element={<ArtsCollection />}/>
+          <Route path="/art-detail" element={<ArtDetail />}/>
+          <Route path="/arts/create" element={<Create/>}/>
+          <Route path="/arts/view" element={<List />}/>
+          <Route path="/arts/edit" element={<Edit />}/>
+          <Route path="/payment-details" element={<PaymentDetails />}/>
+
+       </Routes>      
+       </>
    
   );
 }
-function Home() {
-  return <h2>Home</h2>;
-}
 
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}
 export default App;

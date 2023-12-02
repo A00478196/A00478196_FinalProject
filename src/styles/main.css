@@ -1,0 +1,292 @@
+:root{
+    --button-primary-color:#000;
+    --secondary-theme-color:#E9E7E8;
+    --border-color:#8D8741;
+}
+
+body{
+    font-family: 'Esteban', serif;
+font-family: 'Inter', sans-serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Roboto', sans-serif;
+overflow-x: hidden;
+
+}
+
+.fw-8{
+  font-size: 0.8em;
+}
+
+.fw-9{
+  font-size: 0.9em;
+}
+
+button{
+    background: var(--button-primary-color) ;
+    border: 1px solid var(--button-primary-color) ;
+    color: #fff;
+    font-size: .8em !important;
+}
+
+button:hover{
+    background-color: #fff !important;
+    border:1px solid var(--button-primary-color) !important;
+    color:var(--button-primary-color) !important;
+}
+
+button a{
+    /* color:var(--button-primary-color) !important; */
+
+}
+button:hover a{
+    color:var(--button-primary-color) !important;
+}
+
+.navbar{
+    margin-top: 0;
+    padding: 0;
+    box-shadow: 0 1px 10px rgb(0, 0, 0, 0.2);
+    background-color: #fff;
+    /* position: relative;
+    overflow: hidden; */
+    /* z-index: 999; */
+}
+
+.navbar .container-fluid{
+    padding: .5em 2em;
+}
+
+.container-right{
+    background-color: var(--secondary-theme-color);
+}
+.details{
+    position: absolute;
+    top: 30%;
+    left: 200px;
+}
+
+.main-heading{
+    font-size: 5em;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+.landingPage span{
+    letter-spacing: 3px;
+    font-size: 0.8em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.shape1{
+    width:100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+   
+}
+
+.shape1 img{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: -80px;
+    right: -60px;
+    
+}
+
+.shape2{
+    width: 300px;
+    height: 300px;
+    background-color: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: -100px;
+    right: -150px;
+
+}
+
+
+.shape3{
+   width: 700px;
+   height: 400px;
+    position: absolute;
+    bottom: -10px;
+}
+
+
+.form-container{
+    box-shadow: 1px 3px 7px rgb(0, 0, 0, 0.2);
+}
+
+.form-control{
+    border: 0;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    border-radius: 0;
+    padding-left: 0;
+}
+
+.form-label{
+    font-size: 0.8em;
+}
+
+input::placeholder, textarea::placeholder{
+    font-size: 0.8em;
+}
+
+input[type="date" i]{
+  font-size: 0.8em;
+}
+
+.hovereffect {
+    width: 100%;
+    /* height: 100%; */
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+  }
+  
+  .hovereffect .overlay {
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    border-left: 1px solid #FFF;
+    border-right: 1px solid #FFF;
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.1s, transform 0.35s;
+    -webkit-transform: scale(0,1);
+    -ms-transform: scale(0,1);
+    transform: scale(0,1);
+  }
+  
+  .hovereffect:hover .overlay {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+  }
+  
+  .hovereffect img {
+    display: block;
+    position: relative;
+    -webkit-transition: all 0.35s;
+    transition: all 0.35s;
+  }
+    
+  .hovereffect:hover img {
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="linear" slope="0.6" /><feFuncG type="linear" slope="0.6" /><feFuncB type="linear" slope="0.6" /></feComponentTransfer></filter></svg>#filter');
+    filter: brightness(0.9);
+    -webkit-filter: brightness(0.6);
+  }
+  
+  .hovereffect h2 {
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    background-color: transparent;
+    color: #FFF;
+    padding: 1em 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+    -webkit-transform: translate3d(0,-100%,0);
+    transform: translate3d(0,-100%,0);
+  }
+  
+  .hovereffect a, .hovereffect p {
+    color: #FFF;
+    padding: 1em 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+    -webkit-transform: translate3d(0,100%,0);
+    transform: translate3d(0,100%,0);
+  }
+  
+  .hovereffect:hover a, .hovereffect:hover p, .hovereffect:hover h2 {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+  
+
+  .section-header{
+    font-size: 0.9em;
+  }
+
+ .live{
+    background-color: green;
+  }
+
+   .offline{
+    background-color: red;
+  }
+
+ 
+  .art-image{
+      position: relative;
+  }
+
+  .art-image::before{
+    content:"";
+    border-top: 4px solid var( --border-color);
+    border-left: 4px solid var( --border-color);
+    position: absolute;
+    width: 120px;
+    top: -7px;
+    height:120px;
+    left: -7px;
+  }
+
+  
+  .art-image::after{
+    content:"";
+    border-bottom: 4px solid var( --border-color);
+    border-right: 4px solid var( --border-color);
+    position: absolute;
+    width: 120px;
+    bottom: -7px;
+    height:120px;
+    right: -7px;
+  }
+
+  .dropdown-menu{
+    min-width: 100px !important;
+    width: 120px !important;
+    margin: 0 auto;
+  }
+
+  .bg-image {
+    height: 91vh;
+    position: relative;
+  }
+
+  .bg-image img{
+    height: 100%;
+    object-fit: cover;
+    /* overflow-y: hidden; */
+  }
+
+  .btns{
+    position: absolute;
+    top:40%;
+    left:30%;
+  }
+
+  .cardImages img{
+    width: 10%;
+    height: 10%;
+    object-fit: contain;
+  }
+
