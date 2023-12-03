@@ -4,11 +4,11 @@ const Input = (props) => {
     let {type, placeholder, value, name, id, disabled, label, className, onChange} = props
   return (
     <>
-    <div class={`${className} my-3`}>
+    <div class={`${className} mb-2`}>
       {
         label&&
       
-      <label for={id} class="form-label text-muted mb-0 text-capitalize">{name}</label>
+      <label for={id} class="form-label text-muted mb-0 text-capitalize fw-bold">{name}</label>
       }
 
         <input
