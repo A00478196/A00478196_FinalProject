@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from '../../components/Layout/Container'
 import SectionHeader from '../../components/common/SectionHeader'
 import { FaEdit } from "react-icons/fa";
@@ -7,35 +7,103 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import LinkButton from '../../components/common/LinkButton';
 import { FaCirclePlus } from "react-icons/fa6";
+import instance from '../../components/auth/axiosConfig';
+import { decoded, token } from '../../helpers/token';
+import ErrorMessage from '../../components/common/ErrorMessage';
+import Button from '../../components/common/Button';
+import SuccessMessage from '../../components/common/SuccessMessage';
+import { returnTimeOut } from '../../helpers/common';
 
 
 
 
 const List = () => {
     const navigate = useNavigate();
-    const [allArts, setAllArts] = useState([
-        {
-            
-            image:  "https://previews.123rf.com/images/alfazetchronicles/alfazetchronicles2306/alfazetchronicles230626692/207297608-abstract-colorful-projection-on-a-wall-created-with-generative-ai.jpg",
-            name:"Modern Art",
-            category:"mordern",
-            author:"Mary Sue",
-            price:"",
-            status:"sold",
-            desc:"this is a sample description",
-            date:"2023-11027"
-        },
-        {
-            image:  "https://previews.123rf.com/images/julianpetersphotography/julianpetersphotography1611/julianpetersphotography161100097/65909520-bogota-colombia-on-december-15-2015-collage-of-street-art-by-various-artists-including-toximano.jpg",
-            name:"Graffiti",
-            category:"modern",
-            author:"Bob Jack",
-            price:"",
-            status:"live",
-            desc:"this is a sample description"
 
-        }
-    ])
+    const [loading, setLoading] = useState(false)
+
+    const [success, setSuccess] = useState("")
+    const [allArts, setAllArts] = useState([ ])
+    const [error, setError] = useState("")
+
+    useEffect(()=>{
+        setLoading(true)
+
+        instance.post('/Artwork/filter', {
+            sellerId:decoded?.id,
+            
+        }, {
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        })
+        .then((res)=>{
+            setLoading(false)
+
+            // setSuccess(true)
+            if(res?.status===200){
+                setAllArts(res?.data)
+                
+               console.log(res)
+            }
+          
+            console.log(res)
+        }).catch((err)=>{
+            setLoading(false)
+            setSuccess("")
+            setError("Something went wrong")
+            console.log(err)
+        })
+    },[])
+
+    const [auctionStarted, setAuctionStarted] = useState({id:0, auctionStarted:false})
+    const [auctionStopped, setAuctionStopped] = useState(false)
+
+    const startAuction = (id) =>{
+        console.log(id)
+        instance.get(`/Artwork/startAuction/${id}`,{
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        }).then((res)=>{
+            console.log(res)
+            setSuccess("You Art is live now! People can bid on it!")
+                setError("")
+            // setAuctionStarted(true)
+            setAuctionStarted({id:id, auctionStarted:true})
+
+        }).catch((err)=>{
+            console.log(err)
+        })
+
+        returnTimeOut(setError, setSuccess)
+
+    }
+
+    const stopAuction = (id) =>{
+        instance.get(`/Artwork/stopAuction/${id}`,{
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        }).then((res)=>{
+            console.log(res)
+            setSuccess("People can no longer bid on your art.")
+            setError("")
+            setAuctionStopped({id:id, auctionStopped:true})
+        }).catch((err)=>{
+            console.log(err)
+            setSuccess("")
+            setError("Something went wrong")
+        })
+
+        setTimeout(()=>{
+            setSuccess("")
+            setError("")
+
+        },[3000])
+    }
+
+    console.log(auctionStarted)
   return (
 <>
     <Container>
@@ -45,8 +113,10 @@ const List = () => {
         <LinkButton text={`Create`} icon={<FaCirclePlus />} type="main" color="black" textColor="white" link={"/arts/create"}/>
 
         </div>
+        <ErrorMessage message={error}/>
+        <SuccessMessage message={success}/>
         <div className='row'>
-            <div className='col-lg-12'>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
                 <div class="table-responsive">
 
             <table class="table table-bordered mt-2 fw-9">
@@ -57,30 +127,48 @@ const List = () => {
                     <th scope="col">Art</th>
                     <th scope="col">Description</th>
                     <th scope="col">Uploaded Date</th>
+                    <td scope="col">Live</td>
                     <th scope="col">Status</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
 
                     </tr>
                 </thead>
                 <tbody>
+                <tr>
+            {loading&&
+            <div class="d-flex justify-content-center ">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+}
+            </tr>
                     {
                         allArts?.map((art, index)=>{
                             return (
                                 <tr>
                                     <td>{index+1}</td>
-                                    <td>{art?.name}</td>
-                                    <td><img src={art?.image} className='img-thumbnail' width={120} height={120}/></td>
-                                    <td>{art?.desc || "--"}</td>
-                                    <td>{art?.date || "--"}</td>
-                                    <td>{art?.status}</td>
+                                    <td>{art?.title}</td>
+                                    <td><img src={art?.imageUrl} className='img-thumbnail' width={120} height={120}/></td>
+                                    <td>{art?.description || "--"}</td>
+                                    <td>{new Date(art?.createdOn).toLocaleString() || "--"}</td>
+                                    <td>{art?.live?'Live':'nope'}</td>
+                                    <td>{art?.status===0?'Available':'Sold'}</td>
+                                    <td className='d-flex flex-column justify-content-between'>
+                                        {/* <Button color="success" className="my-2 rounded" textColor="white" text="Start Auction" disabled={auctionStarted} onClick={()=>startAuction(art?.id)} /> */}
+                                        {/* <Button color="danger" textColor="white" text="Stop Auction" disabled={auctionStarted} onClick={()=>stopAuction(art?.id)} /> */}
+                                        <button disabled={art?.status===0?(auctionStarted?.id===art?.id?true:false):true} className='btn bg-success text-white p-2 my-2' onClick={()=>startAuction(art?.id)}>Start Auction</button>
+
+                                        <button className='btn bg-danger text-white p-2' onClick={()=>stopAuction(art?.id)}>Stop Auction</button>
+                                    </td>
                                     <td>
                                     <div class="btn-group dropend">
                                     <p  class="pe-auto" data-bs-toggle="dropdown" aria-expanded="false">
                                     <BsThreeDotsVertical />
-
                                     </p>
                                     <ul class="dropdown-menu p-2 fw-9 pe-auto">
-                                        <li className='' onClick={()=>navigate('/arts/edit')}><FaEdit />  <span>Edit</span> </li>
+                                        <li className='' onClick={()=>navigate('/arts/edit', {state:art?.id})}><FaEdit />  <span>Edit</span> </li>
                                         <li className=''  data-bs-toggle="modal" data-bs-target="#deleteModal"><MdDelete /> <span>Delete</span></li>
                                     </ul>
                                     </div>

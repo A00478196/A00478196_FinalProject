@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 const ErrorMessage = (props) => {
-    let {message} = props
+    let {message, className} = props
   return (
     <>
-        <p className='error-message fw-bold text-danger fw-8 m-0'>{message}</p>
+        <p className={`error-message fw-bold text-danger fw-8 m-0 ${className}`}>{message}</p>
     </>
   )
 }

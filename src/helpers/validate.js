@@ -17,18 +17,18 @@ export const validateForm = (data, setFormErrors)=>{
 
 
     if(data){
-    Object.keys(data)?.map((formD)=>{
-        let key = formD
-        let val = data[formD]
-        if(val!==undefined){
-            if(!val.trim() ){
+        console.log(data)
+        Object.keys(data)?.map((formD)=>{
+            let key = formD
+            let val = data[formD]
+            if(val!==undefined ){
+                if( !val ){
+                    errors[key] = `${formD} is required`
+                }
+            }else{
                 errors[key] = `${formD} is required`
             }
-        }else{
-            errors[key] = `${formD} is required`
-        }
-        
-    })
+        })
 
     
     Object.keys(testForDisabledChar)?.map((formD)=>{
@@ -67,6 +67,29 @@ export const validateForm = (data, setFormErrors)=>{
     }
     }
 
+    console.log(errors)
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+}
+
+export const generalForm = (data, setFormErrors)=>{
+    const errors = {};
+
+    if(data){
+        console.log(data)
+        Object.keys(data)?.map((formD)=>{
+            let key = formD
+            let val = data[formD]
+            if(val!==undefined ){
+                if( !val ){
+                    errors[key] = `${formD} is required`
+                }
+            }else{
+                errors[key] = `${formD} is required`
+            }
+        })
+    }
+    console.log(errors)
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
 }
