@@ -12,12 +12,14 @@ import ErrorMessage from '../components/common/ErrorMessage'
 import instance from '../components/auth/axiosConfig'
 import { useNavigate } from "react-router-dom";
 import AlertMessage from '../components/common/AlertMessage'
+import { returnTimeOut } from '../helpers/common'
 
 
 
 const Register = () => {
     const navigate = useNavigate();
 
+    const [error, setError] = useState("")
     const [success, setSuccess] = useState(false)
     const [formErrors, setFormErrors] = useState({})
     const [formData, setFormData] = useState({
@@ -148,7 +150,8 @@ const Register = () => {
         }else{
             console.log("Error")
         }
-        
+
+        returnTimeOut(setError, setSuccess)
     }
   return (
     <Container>

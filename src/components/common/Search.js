@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SectionHeader from './SectionHeader';
+import Button from './Button';
 
 const Search = ({list, setFilteredList}) => {
     const [inputText, setInputText] = useState("");
@@ -18,11 +19,10 @@ const Search = ({list, setFilteredList}) => {
         
         //return the item which contains the user input
         else {
-            return el.name?.toLowerCase().includes(inputText)
+            return el.title?.toLowerCase().includes(inputText)
         }
     }))
   },[inputText])
-
 
   return (
     <>
@@ -31,7 +31,7 @@ const Search = ({list, setFilteredList}) => {
 
       <div className="search">
         <input
-            className='form-control'
+          className='form-control'
           id="outlined-basic"
           variant="outlined"
           fullWidth
@@ -40,7 +40,6 @@ const Search = ({list, setFilteredList}) => {
           onChange={inputHandler}
         />
       </div>
-      
     </div>
     </>
   )

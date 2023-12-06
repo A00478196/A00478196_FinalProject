@@ -15,7 +15,7 @@ const Home = () => {
       <div className='landingPage'>
         <div class="container-fluid text-center">
           <div class="row">
-            <div class="col bg-white vh-100 text-start postion-relative overflow-hidden p-0">
+            <div class="col-lg-6 col-md-7 col-sm-12 bg-white vh-100 text-start postion-relative overflow-hidden p-0">
               
               <div className='details'>
                 <span className='text-left text-muted'>Come explore with us</span>
@@ -43,7 +43,7 @@ const Home = () => {
               </div>
             
             </div>
-            <div class="col container-right  position-relative overflow-hidden p-0 ">
+            <div class="col-lg-6 col-md-5 col-sm-12 container-right  position-relative overflow-hidden p-0 ">
               <div className='shape2'></div>
               <div className='shape3'><img src={shape3}/></div>
               <div className='btns'>

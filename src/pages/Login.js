@@ -1,22 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Input from '../components/common/Input'
 import Button from '../components/common/Button'
 import LinkButton from '../components/common/LinkButton'
+import { generalForm } from '../helpers/validate'
+import instance from '../components/auth/axiosConfig'
+import { Navigate, useNavigate } from 'react-router-dom'
+import ErrorMessage from '../components/common/ErrorMessage'
+import { returnTimeOut } from '../helpers/common'
 
 const Login = () => {
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
+
+    const [formErrors, setFormErrors] = useState({})
+    const [formData, setFormData] = useState({
+        identity:"",
+        password:""
+    })
+
+    const onChange = (e) => {
+        let {name, value} = e?.target
+        let data = {...formData}
+        let errors = {...formErrors}
+
+        data[name] = value
+        errors[name] = ""
+
+        setFormData(data)
+        setFormErrors(errors)
+    }
+
+    const navigate = useNavigate()
+
+    const onSubmit = (e) =>{
+        e.preventDefault()
+
+        if(generalForm(formData, setFormErrors)){
+            instance.post('/api/Auth/login', formData)
+                .then((res)=>{
+                    localStorage.setItem("token", res?.data)
+                    return navigate('/')
+                    // return <Navigate to="/" />
+                    // navigate('/')
+                    console.log(res)
+                })
+                .catch((err)=>{
+                    if(err?.response?.status===404){
+                        setError("404! Something went wrong with the server.")
+                    }else{
+                        setError(err?.response?.data)
+                    }
+                    console.log(err?.response)
+                })
+        }else{
+            // setError("Something went wrong!")
+        }
+      
+        returnTimeOut(setError, setSuccess)
+    }
+
   return (
     <>
         <div className='container mt-4'>
             <div className='form-container w-50 m-auto mt-4 pt-4 border border-1 p-4 rounded-3'>
             <h4 className='mb-4'>Login</h4>
+            <ErrorMessage message={error}/>
             <form>
                 <Input 
                     type="text"
-                    id="username"
-                    name="username"
+                    id="identity"
+                    name="identity"
                     label="Username"
                     placeholder="Enter your Username"
+                    onChange={onChange}
                 />
+
+{
+                            formErrors?.identity && <ErrorMessage message={formErrors?.identity }/>
+                        }
 
                 <Input 
                     type="password"
@@ -24,10 +85,18 @@ const Login = () => {
                     name="password"
                     label="Password"
                     placeholder="Password"
+                    onChange={onChange}
+
                 />
+                
+{
+                            formErrors?.password && <ErrorMessage message={formErrors?.password }/>
+                        }
+
 
                 <Button 
                     text="Login" type="main" className="mt-2" color="black" textColor="white"
+                    onClick={onSubmit}
                 />
 
             </form>
