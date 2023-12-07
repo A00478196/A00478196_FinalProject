@@ -23,7 +23,8 @@ const Create = () => {
 
     const [formData, setFormData] = useState({
         title:"",
-        createdBy:decoded?.firstName
+        // createdBy:JSON.stringify(decoded?.id)
+        createdBy:decoded?.id
     })
 
     const onChange = (e) =>{

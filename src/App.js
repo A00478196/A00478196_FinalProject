@@ -25,12 +25,14 @@ import EditCat from "./pages/category/Edit";
 import PaymentDetails from "./pages/PaymentDetails";
 import PrivateRoute from "./components/common/Routes/PrivateRoute";
 import { getLoggedUser, isLoggedIn } from "./helpers/auth";
+import BidDetails from "./pages/BidDetails";
+import UserPreferences from "./pages/UserPreferences";
+import NotFound from "./pages/NotFound";
 
 function App() {
 
   useEffect(()=>{
     isLoggedIn() && getLoggedUser()
-
   },[])
   return (
    
@@ -38,10 +40,10 @@ function App() {
       <Navbar />
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
-          <Route path="/browse-arts" element={<ArtsCollection />}/>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />}/>
+          <Route exact path="/register" element={<Register />}/>
+          <Route exact path="/browse-arts" element={<ArtsCollection />}/>
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/art-detail/:id" element={<ArtDetail />}/>
           </Route>
@@ -69,9 +71,17 @@ function App() {
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/category/edit" element={<EditCat />} />
           </Route>
+          <Route exact path='/' element={<PrivateRoute/>}>
+            <Route path="/bid-details" element={<BidDetails />} />
+          </Route>
+          <Route exact path='/' element={<PrivateRoute/>}>
+            <Route path="/user/preferences" element={<UserPreferences />} />
+          </Route>
 
+          <Route path='*' element={<NotFound />} />
 
-       </Routes>      
+       </Routes>  
+    
        </>
    
   );

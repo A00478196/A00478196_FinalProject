@@ -169,7 +169,7 @@ const ArtsCollection = () => {
       
     })
     :
-    <EmptyMessage title="arts"/>
+    <EmptyMessage title="arts" className=""/>
     // <p>Sorry, there are no matching items</p>
 }
 

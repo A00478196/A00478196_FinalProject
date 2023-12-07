@@ -11,6 +11,8 @@ import { returnTimeOut } from '../helpers/common'
 const Login = () => {
     const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
+
 
     const [formErrors, setFormErrors] = useState({})
     const [formData, setFormData] = useState({
@@ -35,18 +37,25 @@ const Login = () => {
     const onSubmit = (e) =>{
         e.preventDefault()
 
+        setLoading(true)
+
         if(generalForm(formData, setFormErrors)){
             instance.post('/api/Auth/login', formData)
                 .then((res)=>{
+                    setLoading(false)
                     localStorage.setItem("token", res?.data)
-                    return navigate('/')
+                    return navigate('/', {replace:true})
                     // return <Navigate to="/" />
                     // navigate('/')
                     console.log(res)
                 })
                 .catch((err)=>{
+                    setLoading(false)
+
                     if(err?.response?.status===404){
-                        setError("404! Something went wrong with the server.")
+                        setError(err?.response?.data)
+
+                        // setError("404! Something went wrong with the server.")
                     }else{
                         setError(err?.response?.data)
                     }
@@ -97,6 +106,7 @@ const Login = () => {
                 <Button 
                     text="Login" type="main" className="mt-2" color="black" textColor="white"
                     onClick={onSubmit}
+                    disabled={loading}
                 />
 
             </form>

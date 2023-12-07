@@ -59,8 +59,8 @@ const List = () => {
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Created By</th>
                     <th scope="col">Created On</th>
+                    {/* <th scope="col">Created On</th> */}
                     <td scope="col"></td>
                     </tr>
             </thead>
@@ -73,7 +73,7 @@ const List = () => {
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-}
+            }
             </tr>
            { 
            categories?.length>0 &&
@@ -81,7 +81,7 @@ const List = () => {
                 return <tr key={index}>
                     <td>{index+1}</td>
                     <td>{cat?.title}</td>
-                    <td>{cat?.createdBy}</td>
+                    {/* <td>{cat?.createdBy}</td> */}
                     <td>{new Date(cat?.createdOn).toLocaleString()}</td>
                     <td>
 

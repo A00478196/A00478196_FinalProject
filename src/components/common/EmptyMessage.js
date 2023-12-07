@@ -1,9 +1,9 @@
 import React from 'react'
 
 const EmptyMessage = (props) => {
-    let {title} = props
+    let {title, className} = props
   return (
-    <p className='fw-9 mt-2 mb-0'>Sorry, no {title} found.</p>
+    <p className={`fw-9 mt-2 mb-0 ${className}`}>Sorry, no {title} found.</p>
   )
 }
 
