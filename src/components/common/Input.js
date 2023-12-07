@@ -1,4 +1,5 @@
 import React from 'react'
+import { regexForLabels } from '../../helpers/common'
 
 const Input = (props) => {
     let {type, placeholder, value, name, id, disabled, label, className, onChange} = props
@@ -8,7 +9,10 @@ const Input = (props) => {
       {
         label&&
       
-      <label for={id} class="form-label text-muted mb-0 text-capitalize fw-bold">{name}</label>
+      <label for={id} class="form-label text-muted mb-0 text-capitalize fw-bold">{
+        name && 
+        regexForLabels(name)
+      }</label>
       }
 
         <input

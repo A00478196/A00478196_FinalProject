@@ -48,8 +48,8 @@ const Edit = () => {
         title:"",
         description:"",
         minimumBid:0,
-        imageUrl:"https://www.shutterstock.com/shutterstock/photos/2060087966/display_1500/stock-photo-abstract-contemporary-art-collage-portrait-of-young-woman-with-flowers-on-face-hides-her-eyes-2060087966.jpg",
-        "categoryId": 1
+        imageUrl:"https://images.pexels.com/photos/959314/pexels-photo-959314.jpeg?auto=compress&cs=tinysrgb&w=600",
+        categoryId: 1
     })
 
     const onChange = (e) =>{
@@ -102,19 +102,20 @@ const Edit = () => {
                     "Authorization":`Bearer ${token}`
                 }
             }).then((res)=>{
-                if(res?.status===200){
                     setSuccess("Art Edited Successfully!")
-                }
+                
                 setFormData({})
                 setFormErrors({})
                 setLoading(false)
                 setError("")
-                console.log(res)
+                setTimeout(()=>{
+                    navigate('/arts/view')
+                  },[900])
+        
             }).catch((err)=>{
-                setError("Something went wrong")
+                setError(err?.response?.data)
                 setSuccess("")
-
-                console.log(err)
+                setLoading(false)
             })
         }else{
             setLoading(false)

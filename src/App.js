@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Link,
-  Routes
+  Routes,
+  useNavigate
 } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,9 +32,7 @@ import NotFound from "./pages/NotFound";
 
 function App() {
 
-  useEffect(()=>{
-    isLoggedIn() && getLoggedUser()
-  },[])
+
   return (
    
       <>
@@ -44,15 +43,14 @@ function App() {
           <Route exact path="/login" element={<Login />}/>
           <Route exact path="/register" element={<Register />}/>
           <Route exact path="/browse-arts" element={<ArtsCollection />}/>
-          <Route exact path='/' element={<PrivateRoute/>}>
-            <Route path="/art-detail/:id" element={<ArtDetail />}/>
-          </Route>
+         
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/arts/create" element={<Create/>}/>
           </Route>
-          <Route exact path='/' element={<PrivateRoute/>}>
-            <Route path="/art-detail/:id" element={<ArtDetail />}/>
-          </Route>
+          <Route path="/art-detail/:id" element={<ArtDetail />}/>
+
+          {/* <Route exact path='/' element={<PrivateRoute/>}>
+          </Route> */}
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/arts/view" element={<List />}/>
           </Route>

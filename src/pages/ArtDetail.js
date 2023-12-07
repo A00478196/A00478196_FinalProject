@@ -5,10 +5,12 @@ import Button from "../components/common/Button";
 import Modal from "../components/common/Modal";
 import { useLocation } from "react-router";
 import instance from "../components/auth/axiosConfig";
+import { token } from "../helpers/token";
+import LinkButton from "../components/common/LinkButton";
 
 const ArtDetail = () => {
   const [art, setArt] = useState({});
-
+  const [cat, setCat] = useState("");
   const [tempBidState, setTempBidSTate] = useState("");
   const [bidState, setBidState] = useState(art?.live);
   const [soldStatus, setSoldStatus] = useState(false);
@@ -25,121 +27,93 @@ const ArtDetail = () => {
         // setSuccess(true)
         if (res?.status === 200) {
           setArt(res?.data);
-          console.log(res);
         }
-
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [artId]);
 
+  useEffect(() => {
+    if (art) {
+      console.log(art);
+      instance
+        .get(`/Category/${art?.categoryId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res) {
+            console.log(res);
+            setCat(res?.data?.title);
+            // setArt(art=>({...art, categoryId:res?.data?.tile}))
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [art]);
+
   return (
     <>
       <Container>
         <div className="row">
-          <div className="col-lg-4">
-            <div className="art-image">
-              {
-                art?.imageUrl && <img
-                src={art?.imageUrl}
-                className=""
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "block",
-                  padding: "7px",
-                }}
-              />
-              }
+          <div className="col-lg-4 col-md-4 col-sm-7 text-center">
+            <div className="art-image mt-4 mb-4">
+              {art?.imageUrl && (
+                <img
+                  src={art?.imageUrl}
+                  className="mx-auto"
+                  style={{
+                    width: "80%",
+                    height: "100%",
+                    display: "block",
+                    padding: "7px",
+                  }}
+                />
+              )}
+            </div>
+
+            
+          </div>
+
+          <div className="col-lg-8 col-md-8 col-sm-5 mt-4">
+            <h5 className="mt-3 ">{art?.title}</h5>
+              <span className=" fw-bold fw-9 text-muted mb-2">{art?.description || "--"}</span>
               
+            <p className="mt-4">
+              <span className=" fw-bold fw-9">Category: </span>
+              {cat || "--"}
+            </p>
+            <p>
+              <span className=" fw-bold fw-9">Minimum Bid Price: </span>$
+              {art?.minimumBid || "--"}
+            </p>
+            <p>
+              <span className=" fw-bold fw-9">Auction Status: </span>
+              {art?.live === "false" ? "Not Started Yet" : "Live"}
+            </p>
+
+            <Modal bidState={art?.live === "true"} art={art} />
+
+            <div className="mt-4">
+            <LinkButton
+              text="Continue Browsing"
+              color="black"
+              textColor="white"
+              link="/browse-arts"
+            />
+            <LinkButton
+             className="ms-2"
+              text="See Your Bids"
+              color="black"
+              textColor="white"
+              link="/bid-details"
+            />
             </div>
           </div>
-
-          <div className="col-lg-8">
-            {/* {bidState ? (
-              <span className="liveBtn live py-2 px-4 rounded-pill text-white fw-8">
-                Live
-              </span>
-            ) : (
-              <span className="liveBtn offline p-2 rounded-pill text-white fw-8">
-                Offline
-              </span>
-            )} */}
-            <h3 className="mt-3">{art?.title}</h3>
-            <p>
-              <span className=" fw-bold fw-9"></span>
-              {art?.description || '--'}
-            </p>
-            <p>
-              <span className=" fw-bold fw-9">Category: </span>
-              {art?.category ||'--'}
-            </p>
-            <p>
-              <span className=" fw-bold fw-9">Min Bid Price: </span>$
-              {art?.minimumBid ||'--'}
-            </p>
-            <p>
-              <span className=" fw-bold fw-9">Live Status: </span>
-              {art?.live === false ? "Not Yet" : "Live"}
-            </p>
-
-            <Modal bidState={!bidState} art={art} />
-          </div>
-        </div>
-        <div className="row mt-4">
-          {soldStatus === false ? (
-            <>
-              <SectionHeader
-                label={"Details of Highest Bidder"}
-                className={"ms-0 ps-0 pt-4 pb-3 fw-9 "}
-              />
-              <table class="table table-bordered table-sm fw-9">
-                <thead>
-                  <tr className="">
-                    <th scope="col">#</th>
-                    <th scope="col">Highest Bid Made By</th>
-                    <th scope="col">Highest Bid Price</th>
-                    <th scope="col">Bid Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>$4000</td>
-                    <td>2023/11/26 6:38 PM</td>
-                  </tr>
-                </tbody>
-              </table>
-            </>
-          ) : (
-            <>
-              <SectionHeader
-                label={"Details of Buyer"}
-                className={"ms-0 ps-0 pt-4 pb-3 fw-9 "}
-              />
-              <table class="table table-bordered table-sm fw-9">
-                <thead>
-                  <tr className="">
-                    <th scope="col">#</th>
-                    <th scope="col">Bought By</th>
-                    <th scope="col"> Sold Price</th>
-                    <th scope="col">Bough Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>$4000</td>
-                    <td>2023/11/28 6:38 PM</td>
-                  </tr>
-                </tbody>
-              </table>
-            </>
-          )}
         </div>
       </Container>
     </>

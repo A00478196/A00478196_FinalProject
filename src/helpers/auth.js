@@ -25,7 +25,8 @@ export const getLoggedUser = () =>  {
 }
 
 export const logout = () =>{
-    console.log("logged")
+    // console.log("logged")
     localStorage.removeItem("token")
-    return redirect('/login', {replace:true})
+    
+    redirect('/login', {replace:true})
 }
