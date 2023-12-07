@@ -127,7 +127,7 @@ const List = () => {
                     <th scope="col">Art</th>
                     <th scope="col">Description</th>
                     <th scope="col">Uploaded Date</th>
-                    <td scope="col">Live</td>
+                    {/* <td scope="col">Live</td> */}
                     <th scope="col">Status</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -153,12 +153,12 @@ const List = () => {
                                     <td><img src={art?.imageUrl} className='img-thumbnail' width={120} height={120}/></td>
                                     <td>{art?.description || "--"}</td>
                                     <td>{new Date(art?.createdOn).toLocaleString() || "--"}</td>
-                                    <td>{art?.live?'Live':'nope'}</td>
-                                    <td>{art?.status===0?'Available':'Sold'}</td>
+                                    {/* <td>{art?.live === "true"?'Live':'Inactive'}</td> */}
+                                    <td>{art?.status!=="" && art?.status?.toLowerCase()==='draft'?'Visible':art?.status==='Active'?'Available':'Sold'}</td>
                                     <td className='d-flex flex-column justify-content-between'>
                                         {/* <Button color="success" className="my-2 rounded" textColor="white" text="Start Auction" disabled={auctionStarted} onClick={()=>startAuction(art?.id)} /> */}
                                         {/* <Button color="danger" textColor="white" text="Stop Auction" disabled={auctionStarted} onClick={()=>stopAuction(art?.id)} /> */}
-                                        <button disabled={art?.status===0?(auctionStarted?.id===art?.id?true:false):true} className='btn bg-success text-white p-2 my-2' onClick={()=>startAuction(art?.id)}>Start Auction</button>
+                                        <button disabled={art?.status==='Active'?(auctionStarted?.id===art?.id?true:false):false} className='btn bg-success text-white p-2 my-2' onClick={()=>startAuction(art?.id)}>Start Auction</button>
 
                                         <button className='btn bg-danger text-white p-2' onClick={()=>stopAuction(art?.id)}>Stop Auction</button>
                                     </td>

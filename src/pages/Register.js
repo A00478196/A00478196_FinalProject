@@ -4,8 +4,7 @@ import LinkButton from '../components/common/LinkButton'
 import Button from '../components/common/Button'
 import Radio from '../components/common/Radio'
 import Container from "../components/Layout/Container"
-import { Country, State, City} from 'country-state-city';
-import ReactSelect from '../components/common/ReactSelect'
+
 import {validateForm} from '../helpers/validate'
 import axios from 'axios'
 import ErrorMessage from '../components/common/ErrorMessage'
@@ -13,6 +12,7 @@ import instance from '../components/auth/axiosConfig'
 import { useNavigate } from "react-router-dom";
 import AlertMessage from '../components/common/AlertMessage'
 import { returnTimeOut } from '../helpers/common'
+import Address from '../components/common/Address'
 
 
 
@@ -20,6 +20,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [formErrors, setFormErrors] = useState({})
     const [formData, setFormData] = useState({
@@ -38,81 +39,7 @@ const Register = () => {
         profilePictureUrl: "string",
 
     })
-    const [data, setData] = useState({
-        countries:[],
-        states:[],
-        cities:[],
-        country:'',
-        state:'',
-        city:'',
-        
-    })
-    useEffect(()=>{
-        let allCountries = Country.getAllCountries();
 
-        // { value: 'chocolate', label: 'Chocolate' },
-        let options = []
-
-        allCountries?.length>0 &&
-            allCountries?.map((country, index)=>{
-            options.push({value:country?.isoCode, label:country?.name})
-            })
-
-        options && options?.length>0 && setData(data=>({...data, countries:options}))
-    },[])
-
-    const onCountryChange = (val) =>{
-        if(val!=="")
-        setData(data=>({...data, country:val?.value, states:[], cities:[]}))
-        setFormData(formData=>({...formData, country:val?.value}))
-
-        setFormErrors(formErrors=>({...formErrors, country:""}))
-
-    }
-    const onStateChange = (val) =>{
-        if(val!=="")
-        setData(data=>({...data, state:val?.value, cities:[]}))
-        setFormData(formData=>({...formData, province:val?.value}))
-        setFormErrors(formErrors=>({...formErrors, state:""}))
-
-    }
-    const onCityChange = (val) =>{
-        if(val!=="")
-        setData(data=>({...data, city:val?.value}))
-        setFormData(formData=>({...formData, city:val?.value}))
-        setFormErrors(formErrors=>({...formErrors, city:""}))
-
-    }
-    
-    
-
-    useEffect(()=>{
-        let allStates = State.getStatesOfCountry(data?.country)       
-
-         let options = []
-
-         allStates?.length>0 &&
-         allStates?.map((state, index)=>{
-            options.push({value:state?.isoCode, label:state?.name})
-            })
-
-        options && options?.length>0 && setData(data=>({...data, states:options}))
-
-    }, [data?.country])
-
-    
-    useEffect(()=>{
-        let allCities = City.getCitiesOfState(data?.country, data?.state)       
-        let options = []
-
-         allCities?.length>0 &&
-         allCities?.map((city, index)=>{
-            options.push({value:city?.name, label:city?.name})
-        })
-
-        options && options?.length>0 && setData(data=>({...data, cities:options}))
-
-    }, [data?.state])
    
     const onChange = (e) => {
         let {name, value} = e?.target
@@ -131,7 +58,10 @@ const Register = () => {
     }
 
     const onSubmit = (e) =>{
+
         e.preventDefault()
+        setLoading(true)
+
         console.log(validateForm(formData, setFormErrors))
         if(validateForm(formData, setFormErrors)){
             console.log(formData)
@@ -139,16 +69,21 @@ const Register = () => {
             instance.post('/User', formData)
             .then((res)=>{
                 setSuccess(true)
+                setLoading(false)
+
                 setTimeout(()=>{
                     navigate('/login')
  
                 },[2000])
                 console.log(res)
             }).catch((err)=>{
+                setLoading(false)
+
                 console.log(err?.response?.data?.title)
             })
         }else{
             console.log("Error")
+            setLoading(false)
         }
 
         returnTimeOut(setError, setSuccess)
@@ -161,6 +96,10 @@ const Register = () => {
                     success && 
 
                     <AlertMessage message="User Created Sucessfully!"/>
+                }
+
+                {
+                    error && <ErrorMessage message = {error}  className="my-2"/>
                 }
             <div className='form-container mt-4 pt-4 border border-1 p-4 rounded-3'>
             <h4 className='mb-4 text-center title'>Register</h4>
@@ -281,69 +220,14 @@ const Register = () => {
                     </div>
                     </div>
                
-                <div className='row'>
-                <div className='col-lg-12'>
-                <ReactSelect 
-                    options={data?.countries}
-                    onChange={onCountryChange}
-                    name="country"
-
-                />
-                 {
-                            formErrors?.country && <ErrorMessage message={formErrors?.country }/>
-                        }
-                </div>
-                </div>
-
-                
-              
-                <div className='row'>
-                    <div className='col-lg-6'>
-                    <ReactSelect 
-                    options={data?.states}
-                    onChange={onStateChange}
-                    name="state"
-
-                />
-                 {
-                            formErrors?.state && <ErrorMessage message={formErrors?.state }/>
-                        }
-                    </div>
-                    <div className='col-lg-6'>
-                    <ReactSelect 
-                    options={data?.cities}
-                    onChange={onCityChange}
-                    name="city"
-
-                />
-                 {
-                            formErrors?.city && <ErrorMessage message={formErrors?.city }/>
-                        }
-                    </div>
-                </div>
-               
-                <div className='row'>
-                <div className='col-lg-6'>
+                        <Address 
+                            formData={formData}
+                            setFormData={setFormData}
+                            formErrors={formErrors}
+                            setFormErrors={setFormErrors}
+                            onChange={onChange}
                         
-                    <Input 
-                    
-                    type="text"
-                    name="postalCode"
-                    id="postalCode"
-                    label="Postal Code"
-                    placeholder="B3k 2P1"
-                    onChange={onChange}
-                    
-
-                />
-                 {
-                            formErrors?.postalCode && <ErrorMessage message={formErrors?.postalCode }/>
-                        }
-
-           
-                </div>
-                </div>
-              
+                        />
 
                 <div className='text-center'>
                 <Button 
@@ -351,6 +235,7 @@ const Register = () => {
                     color="black"
                     textColor="white"
                     onClick={onSubmit}   
+                    disabled={loading}
                 />
 
                 </div>

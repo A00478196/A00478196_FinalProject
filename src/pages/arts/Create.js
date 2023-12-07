@@ -31,7 +31,7 @@ const Create = () => {
         description:"",
         minimumBid:0,
         imageUrl:"https://www.shutterstock.com/shutterstock/photos/2060087966/display_1500/stock-photo-abstract-contemporary-art-collage-portrait-of-young-woman-with-flowers-on-face-hides-her-eyes-2060087966.jpg",
-        "sellerId": 2,
+        "sellerId": decoded?.id,
         "categoryId": 1
     })
 
@@ -133,7 +133,6 @@ const Create = () => {
                         <form className='mt-2'>
                         <SuccessMessage message = {success}  className="my-2"/>
                         <ErrorMessage message = {error}  className="my-2"/>
-
 
                             <Input
                                 type="text"

@@ -27,6 +27,8 @@ const Navbar = () => {
 
              <NavLink to="/category" className={"nav-link"}>Category</NavLink>
              <NavLink to="/arts/create" className={"nav-link"}>Create Art</NavLink>
+             <NavLink to="/bid-details" className={"nav-link"}>Bidding Details</NavLink>
+
              {
               user?
               <li class="nav-item dropdown">
@@ -34,6 +36,9 @@ const Navbar = () => {
                   {decoded?.firstName}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li className=''>
+                    <NavLink className={"dropdown-item"} to='/user/preferences'>Preferences</NavLink>
+                  </li>
                   <li><p class="dropdown-item mb-0" onClick={()=>logout()}>Logout</p></li>
                   
                 </ul>
