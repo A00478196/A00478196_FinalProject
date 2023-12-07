@@ -53,7 +53,7 @@ const Login = () => {
 
           setTimeout(() => {
             navigate("/");
-          }, [400]);
+          }, [480]);
         })
         .catch((err) => {
           setLoading(false);
