@@ -466,7 +466,7 @@ const PaymentDetails = () => {
                   name="cvv"
                   id="cvv"
                   placeholder="0000"
-                  className="mt-0"
+                className="mt-0"
                   label={true}
                   onChange={onCvvChange}
                   disabled={cardType === "" ? true : false}
@@ -477,6 +477,7 @@ const PaymentDetails = () => {
               </div>
 
               <Button
+              className="mt-4"
                 text="Save"
                 color="black"
                 textColor="white"

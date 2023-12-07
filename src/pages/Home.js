@@ -8,45 +8,34 @@ import instance from "../components/auth/axiosConfig";
 import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
-// import 'rc-slider/assets/index.css';
 
-
-
-// import " ./node_modules/slick-carousel/slick/slick.css"; 
-// import "./ node_modules/slick-carousel/slick/slick-theme.css";
 const Home = () => {
-  // useEffect(()=>{
-  //   fetch('/artwork/2')
-  //   .then(response => response.json())
-  //   .then(data => console.log(data))
-  //   .catch(error => console.error('Error fetching data:', error));
-  // },[])
 
-  const [recommendedCats, setRecommendedCats] = useState([1,2,3,4])
-  const [arts, setArts] = useState([])
 
-  useEffect(()=>{
-    instance.post('/Artwork/filter', {
-      categoryIds:recommendedCats,
-      
-  }).then((res)=>setArts(res?.data))
-  .catch((err)=>console.log(err))
-  },[])
+  const [recommendedCats, setRecommendedCats] = useState([1, 2, 3, 4]);
+  const [arts, setArts] = useState([]);
+
+  useEffect(() => {
+    instance
+      .post("/Artwork/filter", {
+        categoryIds: recommendedCats,
+      })
+      .then((res) => setArts(res?.data))
+      .catch((err) => console.log(err));
+  }, []);
+  // console.log("@arts", arts)
 
   var settings = {
-    dots:true,
-    className: "center",
+    dots: true,
     className: "center",
     centerMode: true,
     infinite: true,
     centerPadding: "60px",
     slidesToShow: 3,
-    speed: 500,
-    autoplay: true,
-
+    speed: 500
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <>
@@ -105,7 +94,7 @@ const Home = () => {
                   className="mt-4"
                   color="white"
                   textColor="black"
-                  link={" /arts/create"}
+                  link={"/arts/create"}
                 />
               </div>
             </div>
@@ -118,32 +107,41 @@ const Home = () => {
           <div className="col-lg-12 col-md-12 col-sm-12 text-center">
             <div className="recommendedSection my-4">
               <h5>Recommended Section</h5>
-              {
-arts?.length>0?
-              
-              <div className="my-4">
-              <Slider {...settings}>
-                  {
-                    arts?.map((art, index)=>{
-                      return <div className="recommendedHover" onClick={()=>navigate(`/art-detail/${art?.id}`, {state:art?.id})}>
-                          <img width={250} height={200} src={art?.imageUrl}/>
-                          <div class="recommendedoverlay">
-                {/* <h2>Hover effect 7</h2> */}
-                <p className="text-white">
-                  <a>  {art?.title}</a>
-                </p>
-              </div>
-                      </div>
-                    })
-                  }
-                </Slider>
+              {arts?.length > 0 ? (
+                <div className="my-4">
+                  <Slider {...settings}>
+                    {arts?.map((art, index) => {
+                      return (
+                        <div
+                          className="recommendedHover"
+                          onClick={() =>
+                            navigate(`/art-detail/${art?.id}`, {
+                              state: art?.id,
+                            })
+                          }
+                        >
+                          <img width={250} height={200} src={art?.imageUrl} />
+                          {/* <div class="recommendedoverlay">
+                            <p className="text-white">
+                              <a> {art?.title}</a>
+                            </p>
+                          </div> */}
+                        </div>
+                      );
+                    })}
+                  </Slider>
                 </div>
-                :
+              ) : (
                 <>
-                <p>You haven't selected the recommended categories yet!</p>
-                <LinkButton text="Click Here To Add Recommendations" color="black" textColor="white" link="/user/preferences"/>
+                  <p>You haven't set up your preferred art styles yet!</p>
+                  <LinkButton
+                    text="Click Here To Add Recommendations"
+                    color="black"
+                    textColor="white"
+                    link="/user/preferences"
+                  />
                 </>
-                }
+              )}
             </div>
           </div>
         </div>

@@ -152,6 +152,8 @@ input::placeholder, textarea::placeholder{
   background-color: rgb(255, 255, 255, 0.2) !important;
 }
 
+
+
 input[type="date" i]{
   font-size: 0.8em;
 }
@@ -264,7 +266,7 @@ input[type="date" i]{
     width: 120px;
     top: -7px;
     height:120px;
-    left: -7px;
+    left: 8%;
   }
 
   
@@ -276,15 +278,18 @@ input[type="date" i]{
     width: 120px;
     bottom: -7px;
     height:120px;
-    right: -7px;
+    right:8%;
   }
 
   .dropdown-menu{
     min-width: 100px !important;
-    width: 120px !important;
+    width: fit-content;
     margin: 0 auto;
   }
 
+  .dropdown-item.active, .dropdown-item:active{
+    background-color: #F0EEEF;
+  }
   .bg-image {
     height: 91vh;
     position: relative;
