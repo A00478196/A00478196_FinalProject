@@ -54,8 +54,7 @@ const List = () => {
       .catch((err) => {
         setLoading(false);
         setSuccess("");
-        setError("Something went wrong");
-        console.log(err);
+        setError(err?.response?.data?.title);
       });
   };
   useEffect(() => {
@@ -107,7 +106,7 @@ const List = () => {
       .catch((err) => {
         console.log(err);
         setSuccess("");
-        setError(err?.response?.data);
+        setError(err?.response?.data?.title);
       });
 
     setTimeout(() => {
@@ -179,20 +178,26 @@ const List = () => {
                           </td>
                           <td>{art?.description || "--"}</td>
                           <td>
-                            {art?.createdOn && new Date(art?.createdOn).toLocaleString() || "--"}
+                            {(art?.createdOn &&
+                              new Date(art?.createdOn).toLocaleString()) ||
+                              "--"}
                           </td>
                           <td>
-                            {art?.status !== "" &&
-                            art?.status?.toLowerCase() === "draft"
-                              ? "Visible"
-                              : art?.status === "Active"
-                              ? "Available"
-                              : "Sold"}
+                          
+                            {art?.status === "Sold" ? (
+                              <span class="badge px-3 py-1 rounded-pill bg-danger text-dark text-white">
+                                {" "}
+                                {art?.status}
+                              </span>
+                            ) : (
+                              <span class="badge px-3 py-1 rounded-pill bg-warning text-dark">
+                                {" "}
+                                {art?.status}
+                              </span>
+                            )}
                           </td>
                           <td className="d-flex flex-column justify-content-between">
                             <button
-                             
-
                               disabled={
                                 art?.status === "Draft"
                                   ? auctionStarted?.id === art?.id
@@ -201,7 +206,7 @@ const List = () => {
                                   : art?.status === "Sold"
                                   ? true
                                   : true
-                              } 
+                              }
                               className="btn bg-success text-white p-2 my-2"
                               onClick={() => startAuction(art?.id)}
                             >
@@ -232,10 +237,12 @@ const List = () => {
                                 <BsThreeDotsVertical />
                               </p>
                               <ul class="dropdown-menu p-2 fw-9 pe-auto">
-                              <li
+                                <li
                                   className=""
                                   onClick={() =>
-                                    navigate(`/art-detail/${art?.id}`, { state: art?.id })
+                                    navigate(`/art-detail/${art?.id}`, {
+                                      state: art?.id,
+                                    })
                                   }
                                 >
                                   <FaEye /> <span>View</span>{" "}

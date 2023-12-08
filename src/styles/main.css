@@ -475,3 +475,15 @@ input[type="date" i]{
   opacity: 1;
   filter: alpha(opacity=100);
 }
+
+.art-image img{
+  position: relative;
+}
+
+
+.art-image .badge{
+  position: absolute;
+  top:0;
+  left:0;
+  transform: rotate(-45deg);
+}

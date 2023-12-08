@@ -7,7 +7,7 @@ const Logout = () => {
         localStorage.removeItem("token")
         setTimeout(()=>{
             navigate('/login')
-        },[480])
+        },[497])
         setTimeout(()=>{
           window?.location?.reload();
         },[500])

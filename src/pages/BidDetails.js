@@ -6,6 +6,11 @@ import LinkButton from "../components/common/LinkButton";
 import { useNavigate } from "react-router-dom";
 import EmptyMessage from "../components/common/EmptyMessage";
 import SectionHeader from "../components/common/SectionHeader";
+import SuccessMessage from "../components/common/SuccessMessage";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaCirclePlus } from "react-icons/fa6";
 
 const BidDetails = () => {
   const [bidList, setBidList] = useState([{}]);
@@ -19,7 +24,6 @@ const BidDetails = () => {
         "/Bid/filter",
         {
           bidderId: decoded?.id,
-         
         },
         {
           headers: {
@@ -34,20 +38,19 @@ const BidDetails = () => {
       })
       .catch((err) => {
         setLoading(false);
+        // setEror
 
-        console.log(err); 
+        console.log(err);
       });
   }, []);
 
   const getArt = (id) => {
     // console.log(bidList);
-    let returnMsg = "";
     if (bidList) {
       instance
         .get(`/Artwork/${id}`)
         .then((res) => {
-          console.log(res);
-          setArt(art=>([...art, {bidId:id, title: res?.data?.title}]));
+          setArt((art) => [...art, { bidId: id, title: res?.data?.title }]);
         })
         .catch((err) => {
           console.log(err);
@@ -57,11 +60,11 @@ const BidDetails = () => {
     return art;
   };
 
-  useEffect(()=>{
-      bidList?.map((bid, index)=>{
-        return getArt(bid?.artworkId)
-      })
-  },[bidList])
+  useEffect(() => {
+    bidList?.map((bid, index) => {
+      return getArt(bid?.artworkId);
+    });
+  }, [bidList]);
 
   const navigate = useNavigate();
   return (
@@ -80,7 +83,6 @@ const BidDetails = () => {
                   <th scope="col">Art</th>
                   <th scope="col">Bid Price</th>
                   <th scope="col">Status</th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -99,31 +101,35 @@ const BidDetails = () => {
                         <tr>
                           <td>{index + 1}</td>
                           <td>{art[index]?.title}</td>
-                          {/* <td>{bid?.art}</td> */}
                           <td>{bid?.bidAmount}</td>
                           <td>
                             {bid?.successful === "true" ? (
-                              <div>
-                                <p>Congratulations! You've won the bid</p>
-                              </div>
+                              <>
+                                <SuccessMessage
+                                  message="Congratulations! You've won the bid"
+                                  className="fw-9"
+                                />
+
+                                <p
+                                  style={{
+                                    width: "fit-content",
+                                    cursor: "pointer",
+                                  }}
+                                  className="text-decoration-underline fst-italic mt-2 mb-0"
+                                  onClick={() =>
+                                    navigate("/payment-details", {
+                                      state: bid,
+                                    })
+                                  }
+                                >
+                                  Proceed to Payment
+                                </p>
+                              </>
                             ) : (
-                              "Waiting for the decision!"
-                            )}
-                          </td>
-                          <td>
-                            {bid?.successful === "true" && (
-                              <p
-                                style={{
-                                  width: "fit-content",
-                                  cursor: "pointer",
-                                }}
-                                className="text-underline bg-black text-white p-2 rounded"
-                                onClick={() =>
-                                  navigate("/payment-details", { state: bid })
-                                }
-                              >
-                                Proceed to Payment
-                              </p>
+                              <SuccessMessage
+                                message="Waiting for the decision!"
+                                className="text-dark fw-9"
+                              />
                             )}
                           </td>
                         </tr>
@@ -139,7 +145,7 @@ const BidDetails = () => {
                     >
                       Browse our Arts
                     </a>{" "}
-                     to make your bid!
+                    to make your bid!
                   </tr>
                 )}
               </tbody>

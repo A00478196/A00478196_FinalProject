@@ -2,7 +2,7 @@ export const returnTimeOut = (setSuccess, setError) => {
   setTimeout(() => {
     setSuccess("");
     setError("");
-  }, [4000]);
+  }, [5000]);
 };
 
 export const regexForLabels = (name) => {

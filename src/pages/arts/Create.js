@@ -30,7 +30,7 @@ const Create = () => {
     title: "",
     description: "",
     minimumBid: 0,
-    imageFile:null,
+    imageFile: null,
     // imageUrl:"strign",
     sellerId: decoded?.id,
     categoryId: 1,
@@ -50,29 +50,26 @@ const Create = () => {
   };
 
   const onImageChange = (e) => {
-    console.log(e.target.files[0])
-    setFormData(formData=>({...formData, imageFile:e.target.files[0]}))
-    setImage(e.target.files[0])
+    setFormData((formData) => ({ ...formData, imageFile: e.target.files[0] }));
+    setImage(e.target.files[0]);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     setLoading(true);
-    const newData = new FormData()
-    formData && Object.keys(formData).map((data)=>{
-      newData.append(data, formData[data])
-      // console.log("@key", data)
-      // console.log("@value", formData[data])
-    })
+    const newData = new FormData();
+    formData &&
+      Object.keys(formData).map((data) => {
+        newData.append(data, formData[data]);
+      });
 
     if (generalForm(formData, setFormErrors)) {
       instance
         .post("/Artwork", newData, {
           headers: {
             Authorization: `Bearer ${token}`,
-            // 'Content-Type': 'application/json'
-            'content-type': 'multipart/form-data'
+            "content-type": "multipart/form-data",
           },
         })
         .then((res) => {
@@ -89,8 +86,7 @@ const Create = () => {
         })
         .catch((err) => {
           setLoading(false);
-          
-          setError("somethign went wrong");
+          setError(err?.response?.data?.title);
           setSuccess("");
           setLoading(false);
         });
@@ -131,8 +127,6 @@ const Create = () => {
     data["categoryId"] = val?.value;
     setFormData(data);
   };
-
- 
 
   return (
     <>
@@ -198,27 +192,11 @@ const Create = () => {
                   onChange={onCatChange}
                   name="categoryId"
                 />
-                {/* <textarea className='form-control' ></textarea> */}
-                {/* <div className='my-3'>
-                            <label class="form-label text-muted mb-0 text-capitalize">Choose the date your art goes live</label>
 
-                            <Input type="datetime-local"  name="start_date" className="mt-0"/>
-                            </div>
-
-                            <div>
-                           
-                            <label class="form-label text-muted mb-0 text-capitalize">Choose the date your art stops going live</label>
-                            <Input type="datetime-local"  name="end_date"  className="mt-0" />
-                            </div>
-
-
-                            <Input 
-                            type="file"
-                            
-                            name="Art"
-                            /> */}
                 <div className="my-2">
-                <label class="form-label text-muted mb-0 text-capitalize fw-bold mt-2">Choose your art image</label>
+                  <label class="form-label text-muted mb-0 text-capitalize fw-bold mt-2">
+                    Choose your art image
+                  </label>
 
                   <Input
                     type="file"

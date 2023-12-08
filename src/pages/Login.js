@@ -53,11 +53,11 @@ const Login = () => {
 
           setTimeout(() => {
             navigate("/");
-          }, [480]);
+          }, [498]);
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data);
+          setError(err?.response?.data?.title);
         });
     } else {
       setLoading(false);

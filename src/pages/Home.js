@@ -9,10 +9,12 @@ import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
 import { decoded, token } from "../helpers/token";
+import Loader from "../components/common/Loader";
 
 const Home = () => {
   const [recommendedCats, setRecommendedCats] = useState([]);
   const [arts, setArts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     instance
@@ -43,13 +45,20 @@ const Home = () => {
   }, [decoded?.id]);
 
   useEffect(() => {
+    setLoading(true);
     if (recommendedCats?.length > 0) {
       instance
         .post("/Artwork/filter", {
           categoryIds: recommendedCats,
         })
-        .then((res) => setArts(res?.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setArts(res?.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   }, [recommendedCats]);
 
@@ -59,7 +68,7 @@ const Home = () => {
     centerMode: true,
     infinite: true,
     centerPadding: "60px",
-    slidesToShow: recommendedCats?.length>4? 3:1,
+    slidesToShow: arts?.length > 3 ? 3 : 1,
     swipeToSlide: true,
     speed: 500,
   };
@@ -136,7 +145,10 @@ const Home = () => {
           <div className="col-lg-12 col-md-12 col-sm-12 text-center">
             <div className="recommendedSection my-4">
               <h5>Recommended Section</h5>
-              {arts?.length > 0 ? (
+
+              {loading ? (
+                <Loader />
+              ) : arts?.length > 0 ? (
                 <div className="my-4">
                   <Slider {...settings}>
                     {arts?.map((art, index) => {
@@ -149,7 +161,11 @@ const Home = () => {
                             })
                           }
                         >
-                          <img width={250} height={200} src= {`${baseURL}/${art?.imageUrl}`}  />
+                          <img
+                            width={250}
+                            height={200}
+                            src={`${baseURL}/${art?.imageUrl}`}
+                          />
                           <div class="recommendedoverlay">
                             <p className="text-white">
                               <a> {art?.title}</a>

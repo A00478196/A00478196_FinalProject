@@ -59,57 +59,59 @@ const ArtsCollection = () => {
           <div className="col-lg-9 col-md-8 col-sm-8">
             <SectionHeader label="Our Arts Collection" />
             <div className="browse-right w-100">
-                {
-                    loading?
-                    <Loader />
-                    :
-                    list?.length>0?
-                    <ResponsiveMasonry
-                    columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
-                    gutter="10px"
-                  >
-                    <Masonry>
-                      { 
-                        list?.map((list, index) => {
-                          console.log(list);
-                          return (
-                            <>
-                              <div class="item hovereffect">
-                                <img
-                                  src={`${baseURL}/${list?.imageUrl}`}  
-                                  style={{
-                                    width: "100%",
-                                    display: "block",
-                                    padding: "7px",
-                                  }}
+              {loading ? (
+                <Loader />
+              ) : list?.length > 0 ? (
+                <ResponsiveMasonry
+                  columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
+                  gutter="10px"
+                >
+                  <Masonry>
+                    {list?.map((list, index) => {
+                      console.log(list);
+                      return (
+                        <>
+                          <div
+                            class="item hovereffect"
+                            onClick={() =>
+                              navigate(`/art-detail/${list?.id}`, {
+                                state: list?.id,
+                              })
+                            }
+                          >
+                            <img
+                              src={`${baseURL}/${list?.imageUrl}`}
+                              style={{
+                                width: "100%",
+                                display: "block",
+                                padding: "7px",
+                              }}
+                            />
+                            <div class="overlay">
+                              <h2>{list?.title}</h2>
+                              <p>
+                                <Button
+                                  text="Show More"
+                                  color="black"
+                                  textColor="white"
+                                  className="me-3"
+                                  onClick={() =>
+                                    navigate(`/art-detail/${list?.id}`, {
+                                      state: list?.id,
+                                    })
+                                  }
                                 />
-                                <div class="overlay">
-                                  <h2>{list?.title}</h2>
-                                  <p>
-                                    <Button
-                                      text="Show More"
-                                      color="black"
-                                      textColor="white"
-                                      className="me-3"
-                                      onClick={() =>
-                                        navigate(`/art-detail/${list?.id}`, {
-                                          state: list?.id,
-                                        })
-                                      }
-                                    />
-                                  </p>
-                                </div>
-                              </div>
-                            </>
-                          );
-                        })
-                      }
-                    </Masonry>
-                  </ResponsiveMasonry>
-                    :
-                    <EmptyMessage className="fw-9 text-muted " title={"items"} />
-                }
-             
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </Masonry>
+                </ResponsiveMasonry>
+              ) : (
+                <EmptyMessage className="fw-9 text-muted " title={"items"} />
+              )}
             </div>
           </div>
         </div>
