@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import instance from "../../components/auth/axiosConfig";
+import instance, { baseURL } from "../../components/auth/axiosConfig";
 import { decoded, token } from "../../helpers/token";
 import Address from "../../components/common/Address";
 import Radio from "../../components/common/Radio";
@@ -48,12 +48,30 @@ const View = () => {
     }
   }, []);
 
+  console.log(formData)
   return (
     <>
       <Container>
         <div className="row">
           <div className="col-lg-6 col-md-8 col-sm-12 mx-auto">
-            <div className="row">
+          <div className="row">
+                {
+                    (formData?.profilePictureUrl!=="" || formData?.profilePictureUrl!==null) &&
+
+                    <div className="profile d-flex justify-content-center align-items-center">
+
+                    
+                    <img 
+                    src={`${baseURL}/${ formData?.profilePictureUrl}`}
+                    width={120}
+                    height={120}
+                    className="img-thumbnail"
+                    style={{objectFit:"contain"}}
+                    />
+                    </div>
+                }
+            </div>
+            <div className="row mt-4">
               <div className="col-lg-6">
                 <Input
                   type="text"

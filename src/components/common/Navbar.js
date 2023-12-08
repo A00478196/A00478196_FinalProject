@@ -41,12 +41,16 @@ const Navbar = () => {
             id="navbarNavAltMarkup"
           >
             <div class="navbar-nav ">
+              <li className="nav-item">
               <NavLink to="/" activeClassName="selected" className={"nav-link"}>
                 Home
               </NavLink>
+              </li>
+              <li className="nav-item">
               <NavLink to="/browse-arts" className={"nav-link"}>
                 Browse Arts
               </NavLink>
+              </li>
 
               {user && (
                 <>
