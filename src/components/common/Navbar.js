@@ -50,7 +50,7 @@ const Navbar = () => {
 
               {user && (
                 <>
-                  <li class="nav-item dropdown">
+                  <li class="nav-item dropdown ">
                     <a
                       class="nav-link dropdown-toggle"
                       href="#"
@@ -61,7 +61,7 @@ const Navbar = () => {
                     >
                       Category
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu fw-9" aria-labelledby="navbarDropdown">
                       <li className="">
                         <NavLink className={"dropdown-item"} to="/category">
                           View All Category
@@ -89,7 +89,7 @@ const Navbar = () => {
                     >
                       My Arts
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu  fw-9" aria-labelledby="navbarDropdown">
                       <li className="">
                         <NavLink className={"dropdown-item"} to="/arts/view">
                           View My Arts
@@ -122,7 +122,7 @@ const Navbar = () => {
                   >
                     {decoded?.firstName}
                   </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <ul class="dropdown-menu fw-9" aria-labelledby="navbarDropdown">
                     <li className="">
                       <NavLink
                         className={"dropdown-item"}

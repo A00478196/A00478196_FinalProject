@@ -7,7 +7,8 @@ export const returnTimeOut = (setSuccess, setError) => {
 
 export const regexForLabels = (name) => {
     if(name){
-        return name?.replace(/([a-z])([A-Z])/g, '$1 $2')
+      return name
+        // return name?.replace(/([a-z])([A-Z])/g, '$1 $2')
     }
 }
 export const scrollToElement = (id) => {

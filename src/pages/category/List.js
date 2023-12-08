@@ -101,7 +101,7 @@ const List = () => {
                           <td>{index + 1}</td>
                           <td>{cat?.title}</td>
                           {/* <td>{cat?.createdBy}</td> */}
-                          <td>{new Date(cat?.createdOn).toLocaleString()}</td>
+                          <td>{cat?.createdOn && new Date(cat?.createdOn).toLocaleString()}</td>
                           <td className="text-center">
                             <div class="btn-group dropend">
                               <p

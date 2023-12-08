@@ -30,8 +30,8 @@ const Create = () => {
     title: "",
     description: "",
     minimumBid: 0,
-    imageUrl:
-      "https://images.pexels.com/photos/1193743/pexels-photo-1193743.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageFile:null,
+    // imageUrl:"strign",
     sellerId: decoded?.id,
     categoryId: 1,
   });
@@ -49,20 +49,33 @@ const Create = () => {
     setFormErrors(errors);
   };
 
+  const onImageChange = (e) => {
+    console.log(e.target.files[0])
+    setFormData(formData=>({...formData, imageFile:e.target.files[0]}))
+    setImage(e.target.files[0])
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
     setLoading(true);
+    const newData = new FormData()
+    formData && Object.keys(formData).map((data)=>{
+      newData.append(data, formData[data])
+      // console.log("@key", data)
+      // console.log("@value", formData[data])
+    })
 
     if (generalForm(formData, setFormErrors)) {
       instance
-        .post("/Artwork", formData, {
+        .post("/Artwork", newData, {
           headers: {
             Authorization: `Bearer ${token}`,
+            // 'Content-Type': 'application/json'
+            'content-type': 'multipart/form-data'
           },
         })
         .then((res) => {
-          // setSuccess(true)
           setSuccess("Art uploaded Successfully!");
 
           setFormData({});
@@ -76,8 +89,8 @@ const Create = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data);
-          //   setError("Something went wrong");
+          
+          setError("somethign went wrong");
           setSuccess("");
           setLoading(false);
         });
@@ -119,7 +132,7 @@ const Create = () => {
     setFormData(data);
   };
 
-  const onImageChange = () => {};
+ 
 
   return (
     <>
@@ -204,12 +217,14 @@ const Create = () => {
                             
                             name="Art"
                             /> */}
-                <div>
+                <div className="my-2">
+                <label class="form-label text-muted mb-0 text-capitalize fw-bold mt-2">Choose your art image</label>
+
                   <Input
                     type="file"
                     name="Art"
                     accept="image/*"
-                    onClick={onImageChange}
+                    onChange={onImageChange}
                   />
                 </div>
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Container from "../../components/Layout/Container";
 import SectionHeader from "../../components/common/SectionHeader";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import LinkButton from "../../components/common/LinkButton";
 import { FaCirclePlus } from "react-icons/fa6";
-import instance from "../../components/auth/axiosConfig";
+import instance, { baseURL } from "../../components/auth/axiosConfig";
 import { decoded, token } from "../../helpers/token";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import Button from "../../components/common/Button";
@@ -117,7 +117,6 @@ const List = () => {
   };
 
   useEffect(() => {}, [auctionStarted]);
-  console.log(auctionStarted);
   return (
     <>
       <Container>
@@ -172,7 +171,7 @@ const List = () => {
                           <td>{art?.title}</td>
                           <td>
                             <img
-                              src={art?.imageUrl}
+                              src={`${baseURL}/${art?.imageUrl}`}
                               className="img-thumbnail"
                               width={100}
                               //   height={100}
@@ -180,7 +179,7 @@ const List = () => {
                           </td>
                           <td>{art?.description || "--"}</td>
                           <td>
-                            {new Date(art?.createdOn).toLocaleString() || "--"}
+                            {art?.createdOn && new Date(art?.createdOn).toLocaleString() || "--"}
                           </td>
                           <td>
                             {art?.status !== "" &&
@@ -192,13 +191,7 @@ const List = () => {
                           </td>
                           <td className="d-flex flex-column justify-content-between">
                             <button
-                              //   disabled={
-                              //     art?.status === "Active"
-                              //       ? auctionStarted?.id === art?.id
-                              //         ? true
-                              //         : false
-                              //       : false
-                              //   }
+                             
 
                               disabled={
                                 art?.status === "Draft"
@@ -239,8 +232,16 @@ const List = () => {
                                 <BsThreeDotsVertical />
                               </p>
                               <ul class="dropdown-menu p-2 fw-9 pe-auto">
-                                <li
+                              <li
                                   className=""
+                                  onClick={() =>
+                                    navigate(`/art-detail/${art?.id}`, { state: art?.id })
+                                  }
+                                >
+                                  <FaEye /> <span>View</span>{" "}
+                                </li>
+                                <li
+                                  className="mt-2 "
                                   onClick={() =>
                                     navigate("/arts/edit", { state: art?.id })
                                   }

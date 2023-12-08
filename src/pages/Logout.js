@@ -13,7 +13,7 @@ const Logout = () => {
         },[500])
     }
   return (
-    <p className='dropdown-item' onClick={logout}>Logout</p>
+    <p className='dropdown-item mb-0' onClick={logout}>Logout</p>
   )
 }
 

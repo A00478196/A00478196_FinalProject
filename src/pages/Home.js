@@ -4,7 +4,7 @@ import shape1 from "../assets/blob.svg";
 import shape3 from "../assets/blob-2.svg";
 import SectionHeader from "../components/common/SectionHeader";
 import Container from "../components/Layout/Container";
-import instance from "../components/auth/axiosConfig";
+import instance, { baseURL } from "../components/auth/axiosConfig";
 import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
@@ -43,7 +43,6 @@ const Home = () => {
   }, [decoded?.id]);
 
   useEffect(() => {
-    console.log(recommendedCats);
     if (recommendedCats?.length > 0) {
       instance
         .post("/Artwork/filter", {
@@ -61,6 +60,7 @@ const Home = () => {
     infinite: true,
     centerPadding: "60px",
     slidesToShow: 3,
+    swipeToSlide: true,
     speed: 500,
   };
 
@@ -149,7 +149,7 @@ const Home = () => {
                             })
                           }
                         >
-                          <img width={250} height={200} src={art?.imageUrl} />
+                          <img width={250} height={200} src= {`${baseURL}/${art?.imageUrl}`}  />
                           <div class="recommendedoverlay">
                             <p className="text-white">
                               <a> {art?.title}</a>
