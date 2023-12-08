@@ -32,6 +32,7 @@ import NotFound from "./pages/NotFound";
 import View from "./pages/user/View";
 import './components/auth/interceptor'
 import PaymentSuccessful from "./pages/PaymentSuccessful";
+import Footer from "./pages/Footer";
 
 function App() {
 
@@ -89,7 +90,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
 
        </Routes>  
-    
+          <Footer />
        </>
    
   );

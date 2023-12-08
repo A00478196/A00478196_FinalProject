@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import Container from "../components/Layout/Container";
 import SectionHeader from "../components/common/SectionHeader";
 import Button from "../components/common/Button";
@@ -9,6 +9,8 @@ import { decoded, token } from "../helpers/token";
 import LinkButton from "../components/common/LinkButton";
 import EmptyMessage from "../components/common/EmptyMessage";
 import { FaEye } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'
+
 
 const ArtDetail = () => {
   const [art, setArt] = useState({});
@@ -17,13 +19,17 @@ const ArtDetail = () => {
   const [hasBidPreviously, setHasBidPreviously] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+
 
   const location = useLocation();
   const artId = location.state;
 
   useEffect(() => {
+    console.log(artId)
+    if(artId?.id){
     instance
-      .get(`/Artwork/${artId}`)
+      .get(`/Artwork/${artId?.id}`)
       .then((res) => {
         // setSuccess(true)
         if (res?.status === 200) {
@@ -32,7 +38,8 @@ const ArtDetail = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+    };
   }, [artId]);
 
   const fetchCategory = () => {
@@ -157,12 +164,13 @@ const ArtDetail = () => {
 
           <div className="col-lg-8 col-md-8 col-sm-5 mt-4">
             <h5 className="mt-3 ">{art?.title}</h5>
-            <span className=" fw-bold fw-9 text-muted mb-2 fst-italic">
+            <span className="fw-bold fw-9 text-muted mb-2 fst-italic">
               {art?.description || "--"}
             </span>
 
-            <p className="mt-1">
+            <p style={{cursor:"pointer"}} className="mt-1" onClick={()=>navigate(`/browse-arts`, {state:{sellerId:art?.sellerId, sellerName:art?.sellerName}})}>
               <span className=" fw-bold fw-9">By: </span>
+              
               {art?.sellerName || "--"}
             </p>
 
@@ -194,8 +202,8 @@ const ArtDetail = () => {
                 </span>
               ) : (
                 <span class="badge rounded-pill bg-warning text-dark">
-                  {" "}
-                  {art?.status}
+                  {"Preview "}
+                  {/* {art?.status} */}
                 </span>
               )}
             </div>

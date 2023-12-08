@@ -41,11 +41,11 @@ const Home = () => {
           }
         })
         .catch((err) => {
-          setLoading(false)
+          setLoading(false);
           console.log(err);
         });
-    }else{
-      setLoading(false)
+    } else {
+      setLoading(false);
     }
   }, [decoded?.id]);
 
@@ -197,6 +197,8 @@ const Home = () => {
           </div>
         </div>
       </Container>
+
+      
     </>
   );
 };

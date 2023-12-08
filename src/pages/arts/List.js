@@ -54,7 +54,7 @@ const List = () => {
       .catch((err) => {
         setLoading(false);
         setSuccess("");
-        showError(err, setError)
+        showError(err, setError);
       });
   };
   useEffect(() => {
@@ -105,7 +105,7 @@ const List = () => {
       })
       .catch((err) => {
         setSuccess("");
-        showError(err, setError)
+        showError(err, setError);
       });
 
     setTimeout(() => {
@@ -182,16 +182,20 @@ const List = () => {
                               "--"}
                           </td>
                           <td>
-                          
                             {art?.status === "Sold" ? (
-                              <span class="badge px-3 py-1 rounded-pill bg-danger text-dark text-white">
+                              <span class="badge rounded-pill bg-danger text-dark text-white">
+                                {" "}
+                                {art?.status}
+                              </span>
+                            ) : art?.status === "Active" ? (
+                              <span class="badge rounded-pill bg-success text-dark text-white">
                                 {" "}
                                 {art?.status}
                               </span>
                             ) : (
-                              <span class="badge px-3 py-1 rounded-pill bg-warning text-dark">
-                                {" "}
-                                {art?.status}
+                              <span class="badge rounded-pill bg-warning text-dark">
+                                {"Preview "}
+                                {/* {art?.status} */}
                               </span>
                             )}
                           </td>
