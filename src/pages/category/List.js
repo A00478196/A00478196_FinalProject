@@ -6,9 +6,9 @@ import SectionHeader from "../../components/common/SectionHeader";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import LinkButton from "../../components/common/LinkButton";
-import { FaCirclePlus } from "react-icons/fa6";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import EmptyMessage from "../../components/common/EmptyMessage";
 import { returnTimeOut } from "../../helpers/common";
@@ -39,18 +39,16 @@ const List = () => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err?.response);
         if (err?.response?.status == 404) {
           // console.log("error")
           setError("Cannot load the Categories. Something wrong!");
         } else {
-          setError(err?.response?.data);
+          setError(err?.response?.data?.title);
         }
       });
     returnTimeOut(setError, setSuccess);
   }, []);
 
-  //   console.log(error)
   return (
     <>
       <Container>
@@ -100,7 +98,6 @@ const List = () => {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{cat?.title}</td>
-                          {/* <td>{cat?.createdBy}</td> */}
                           <td>{cat?.createdOn && new Date(cat?.createdOn).toLocaleString()}</td>
                           <td className="text-center">
                             <div class="btn-group dropend">
@@ -120,13 +117,7 @@ const List = () => {
                                 >
                                   <FaEdit /> <span>Edit</span>{" "}
                                 </li>
-                                {/* <li
-                                  className="py-1"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#deleteModal"
-                                >
-                                  <MdDelete /> <span>Delete</span>
-                                </li> */}
+                               
                               </ul>
                             </div>
                           </td>

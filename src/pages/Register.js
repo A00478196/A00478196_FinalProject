@@ -36,7 +36,8 @@ const Register = () => {
     postalCode: "",
     gender: "",
     birthDate: "2023-12-03T03:37:01.281Z",
-    profilePictureUrl: "string",
+    // profilePictureUrl: "string",
+    imageFile:null
   });
 
   const onChange = (e) => {
@@ -52,13 +53,28 @@ const Register = () => {
     setFormErrors(errors);
   };
 
+  
+  const onImageChange = (e) =>{
+    setFormData(formData=>({...formData, imageFile:e.target.files[0]}))
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (validateForm(formData, setFormErrors)) {
+    const newData = new FormData()
+    formData && Object.keys(formData).map((data)=>{
+      newData.append(data, formData[data])
+    
+    })
+    
+    if (validateForm(formData, setFormErrors), {
+      headers: {
+        'content-type': 'multipart/form-data'
+      },
+    }) {
       instance
-        ?.post("/User", formData)
+        ?.post("/User", newData)
         .then((res) => {
           setSuccess(true);
           setLoading(false);
@@ -66,7 +82,7 @@ const Register = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data);
+          setError(err?.response?.data?.title);
         });
     } else {
       setLoading(false);
@@ -75,9 +91,11 @@ const Register = () => {
         return scrollToElement(error);
       });
     }
+    console.log(formErrors)
 
     returnTimeOut(setError, setSuccess);
   };
+
   return (
     <Container>
       <div className="row form-register mb-4">
@@ -202,6 +220,17 @@ const Register = () => {
                 </div>
                 <div className="col-lg-12"></div>
               </div>
+
+              <div className="my-2">
+                <label class="form-label text-muted mb-0 text-capitalize fw-bold mt-2">Choose your art image</label>
+
+                  <Input
+                    type="file"
+                    name="Art"
+                    accept="image/*"
+                    onChange={onImageChange}
+                  />
+                </div>
 
               <Address
                 formData={formData}

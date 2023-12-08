@@ -14,11 +14,9 @@ const ArtDetail = () => {
   const [art, setArt] = useState({});
   const [personalBids, setPersonalBids] = useState([]);
   const [cat, setCat] = useState("");
-  const [tempBidState, setTempBidSTate] = useState("");
-  const [bidState, setBidState] = useState(art?.live);
-  const [soldStatus, setSoldStatus] = useState(false);
-  let startDateTime = art?.startFrom;
-  let endDateTime = art?.endTo;
+  const [hasBidPreviously, setHasBidPreviously] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const artId = location.state;
@@ -37,7 +35,7 @@ const ArtDetail = () => {
       });
   }, [artId]);
 
-  useEffect(() => {
+  const fetchCategory = () => {
     if (Object.keys(art).length !== 0) {
       instance
         .get(`/Category/${art?.categoryId}`, {
@@ -47,22 +45,18 @@ const ArtDetail = () => {
         })
         .then((res) => {
           if (res) {
-            console.log(res);
+            setLoading(false);
             setCat(res?.data?.title);
-            // setArt(art=>({...art, categoryId:res?.data?.tile}))
           }
         })
         .catch((err) => {
+          setLoading(false);
           console.log(err);
         });
     }
-  }, [art]);
+  };
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    console.log("DEcoded", decoded?.id);
-    console.log("art", art?.sellerId);
+  const filterBidByArt = () => {
     if (Object?.keys(art)?.length !== 0) {
       if (decoded?.id === art?.sellerId) {
         setLoading(true);
@@ -72,7 +66,6 @@ const ArtDetail = () => {
             {
               // bidderId: decoded?.id,
               artworkId: art?.id,
-              // successful: "false",
             },
             {
               headers: {
@@ -82,19 +75,50 @@ const ArtDetail = () => {
           )
           .then((res) => {
             setLoading(false);
-            console.log(res);
             setPersonalBids(res?.data);
-            // console.log(res);
-            // setBidList(res?.data);
-            // getArt(res?.data)
           })
           .catch((err) => {
             setLoading(false);
-
             console.log(err);
           });
       }
     }
+  };
+
+  const filterBidByArtAndUser = () => {
+    if (Object?.keys(art)?.length !== 0) {
+      // if (decoded?.id === art?.sellerId) {
+      setLoading(true);
+      instance
+        .post(
+          "/Bid/filter",
+          {
+            bidderId: decoded?.id,
+            artworkId: art?.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          setLoading(false);
+          if (res?.data?.length > 0) {
+            setHasBidPreviously(true);
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+      // }
+    }
+  };
+  useEffect(() => {
+    fetchCategory();
+    filterBidByArt();
+    filterBidByArtAndUser();
   }, [art]);
 
   return (
@@ -115,14 +139,32 @@ const ArtDetail = () => {
                   }}
                 />
               )}
+              {art?.status === "Sold" ? (
+                <span class=" badge px-4 rounded-pill bg-danger text-dark text-white">
+                  {" "}
+                  {art?.status}
+                </span>
+              ) : art?.status === "Active" ? (
+                <span class=" badge px-4 rounded-pill bg-success text-dark text-white">
+                  {" "}
+                  {art?.status}
+                </span>
+              ) : (
+                ""
+              )}
             </div>
           </div>
 
           <div className="col-lg-8 col-md-8 col-sm-5 mt-4">
             <h5 className="mt-3 ">{art?.title}</h5>
-            <span className=" fw-bold fw-9 text-muted mb-2">
+            <span className=" fw-bold fw-9 text-muted mb-2 fst-italic">
               {art?.description || "--"}
             </span>
+
+            <p className="mt-1">
+              <span className=" fw-bold fw-9">By: </span>
+              {art?.sellerName || "--"}
+            </p>
 
             <p className="mt-4">
               <span className=" fw-bold fw-9">Category: </span>
@@ -145,6 +187,11 @@ const ArtDetail = () => {
                   {" "}
                   {art?.status}
                 </span>
+              ) : art?.status === "Active" ? (
+                <span class="badge rounded-pill bg-success text-dark text-white">
+                  {" "}
+                  {art?.status}
+                </span>
               ) : (
                 <span class="badge rounded-pill bg-warning text-dark">
                   {" "}
@@ -153,11 +200,27 @@ const ArtDetail = () => {
               )}
             </div>
 
-            <Modal bidState={art?.live === "true"} art={art} />
-            <p className="fw-8 mt-1">
-              <span className="fw-bold">Note: </span> You can only bid on a
-              artwork if the status is Active
-            </p>
+            {
+              art?.status !== "Sold" ? (
+                !hasBidPreviously ? (
+                  <Modal
+                    hasBidPreviously={hasBidPreviously}
+                    filterBidByArtAndUser={filterBidByArtAndUser}
+                    bidState={art?.live === "true"}
+                    art={art}
+                  />
+                ) : (
+                  <span class="badge rounded-pill bg-info text-dark">
+                    Bid Already placed
+                  </span>
+                )
+              ) : (
+                ""
+              )
+              // <p>You've already placed your bid on this art.</p>
+            }
+
+          
 
             <div className="mt-4">
               <LinkButton
@@ -189,6 +252,7 @@ const ArtDetail = () => {
                     <th scope="col">Bid By</th>
                     <th scope="col">Bid Amount</th>
                     <th scope="col">Bid Made On</th>
+                    <td scope="col"> </td>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,6 +275,14 @@ const ArtDetail = () => {
                             <td>
                               {bid?.createdOn &&
                                 new Date(bid?.createdOn)?.toLocaleString()}
+                            </td>
+                            <td>
+                              {bid?.successful === "true" && (
+                                <span class="badge rounded-pill bg-danger text-dark text-white">
+                                  {" "}
+                                  {art?.status}
+                                </span>
+                              )}
                             </td>
                           </tr>
                         </>

@@ -84,6 +84,7 @@ export const generalForm = (data, setFormErrors)=>{
             }else{
                 errors[key] = `${formD} is required`
             }
+        
         })
     }
     setFormErrors(errors);

@@ -67,7 +67,7 @@ const UserPreferences = () => {
         if (err?.response?.status == 404) {
           setError("Cannot load the Categories. Something wrong!");
         } else {
-          setError(err?.response?.data);
+          setError(err?.response?.data?.title);
         }
         setSuccess("");
       });
@@ -124,8 +124,10 @@ const UserPreferences = () => {
       })
       .catch((err) => {
         setLoading(true);
-        if (err?.response?.status === 400) {
+        if (err?.response?.data?.title === "") {
           setError("Something went wrong with ther server!");
+        } else {
+          setError(err?.response?.data?.title);
         }
       });
 
@@ -144,14 +146,11 @@ const UserPreferences = () => {
       .then((res) => {
         setLoading(false);
         setSuccess("Preference Deleted Successfully!");
-        // document.getElementById("deleteModal").classList.remove("show", "d-block");
-        // document.querySelectorAll(".modal-backdrop")
-        //         .forEach(el => el.classList.remove("modal-backdrop"));
         getUserPreference();
       })
       .catch((err) => {
         setLoading(false);
-        setError(err?.response?.data);
+        setError(err?.response?.data?.title);
       });
 
     returnTimeOut(setError, setSuccess);
@@ -168,8 +167,8 @@ const UserPreferences = () => {
 
             <h5>Set your preferences</h5>
             <p className="fw-9">
-              Set your preferred categories, author, art style to never miss
-              them
+              Set your preferred categories to see recommended arts in your
+              homepage
             </p>
             <div className="my-4 d-flex flex-wrap justify-content-between align-items-center">
               {defaultCat?.length > 0 &&
