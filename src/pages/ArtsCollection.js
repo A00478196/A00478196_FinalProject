@@ -9,6 +9,7 @@ import Button from "../components/common/Button";
 import { useNavigate } from "react-router";
 import EmptyMessage from "../components/common/EmptyMessage";
 import Loader from "../components/common/Loader";
+import { useLocation } from "react-router";
 
 const ArtsCollection = () => {
   const [arts, setArts] = useState([]);
@@ -16,9 +17,15 @@ const ArtsCollection = () => {
 
   const [filteredList, setFilteredList] = useState([]);
   const [list, setList] = useState([]);
+  // const [sellerName, setSellerName] = useState(false)
+
+  const location = useLocation();
+  const art = location.state;
 
   useEffect(() => {
     setList(filteredList);
+    // setSellerName(false)
+    // navigate(location.pathname, {sellerId:art?.sellerId, sellerName:""});
   }, [filteredList]);
 
   useEffect(() => {
@@ -33,6 +40,7 @@ const ArtsCollection = () => {
         // setSuccess(true)
         setLoading(false);
         setArts(res?.data);
+        // art?.sellerId=null
       })
       .catch((err) => {
         console.log(err);
@@ -41,6 +49,26 @@ const ArtsCollection = () => {
   }, []);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (art?.sellerId !== "") {
+      // setSellerName(true)
+      instance
+        .post("/Artwork/filter", {
+          sellerId: art?.sellerId,
+        })
+        .then((res) => {
+          // setSuccess(true)
+          setLoading(false);
+          setFilteredList(res?.data);
+          // setArts(res?.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  }, [art?.sellerId]);
 
   return (
     <>
@@ -58,6 +86,8 @@ const ArtsCollection = () => {
           </div>
           <div className="col-lg-9 col-md-8 col-sm-8">
             <SectionHeader label="Our Arts Collection" />
+
+            <span></span>
             <div className="browse-right w-100">
               {loading ? (
                 <Loader />
@@ -71,11 +101,12 @@ const ArtsCollection = () => {
                       console.log(list);
                       return (
                         <>
+                          {/* <p>{list?.sellerName}</p> */}
                           <div
                             class="item hovereffect"
                             onClick={() =>
                               navigate(`/art-detail/${list?.id}`, {
-                                state: list?.id,
+                                state: list,
                               })
                             }
                           >
@@ -89,6 +120,7 @@ const ArtsCollection = () => {
                             />
                             <div class="overlay">
                               <h2>{list?.title}</h2>
+                              <p className="fst-italic">by: <span className="text-warning">{list?.sellerName}</span></p>
                               <p>
                                 <Button
                                   text="Show More"

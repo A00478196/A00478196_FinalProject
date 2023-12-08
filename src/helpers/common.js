@@ -24,3 +24,11 @@ export const scrollToElement = (id) => {
     })
   );
 };
+
+export const showError = (err, setError) =>{
+  if(err?.response?.data){
+    setError(err?.response?.data);
+  }else{
+    setError(err?.response?.data?.title);
+  }
+}

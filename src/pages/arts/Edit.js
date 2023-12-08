@@ -10,7 +10,7 @@ import SuccessMessage from "../../components/common/SuccessMessage";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import { generalForm } from "../../helpers/validate";
 import { token } from "../../helpers/token";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 
 const Edit = () => {
   const [art, setArt] = useState({});
@@ -109,7 +109,7 @@ const Edit = () => {
           }, [900]);
         })
         .catch((err) => {
-          setError(err?.response?.data?.title);
+          showError(err, setError)
           setSuccess("");
           setLoading(false);
         });

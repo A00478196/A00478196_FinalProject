@@ -6,7 +6,7 @@ import instance from "../auth/axiosConfig";
 import { decoded, token } from "../../helpers/token";
 import SuccessMessage from "./SuccessMessage";
 import Button from "./Button";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 import FormHeader from "./FormHeader";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
@@ -68,15 +68,15 @@ const Modal = (props) => {
           setFormErrors({});
           setError("");
           setLoading(false);
-          navigate(`/art-details/${art?.id}`, {state:art})
+          navigate(`/art-detail/${art?.id}`, {state:art})
           props?.filterBidByArtAndUser()
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title);
+          showError(err, setError)
+
           setSuccess("");
           setLoading(false);
-          console.log(err);
         });
     }
     returnTimeOut(setError, setSuccess);

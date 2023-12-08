@@ -8,7 +8,7 @@ import ErrorMessage from "../../components/common/ErrorMessage";
 import SuccessMessage from "../../components/common/SuccessMessage";
 import Container from "../../components/Layout/Container";
 import Input from "../../components/common/Input";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 import FormHeader from "../../components/common/FormHeader";
 
 const Edit = () => {
@@ -81,7 +81,7 @@ const Edit = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         });
     }else{
       setFormErrors({title:"Title is required"})

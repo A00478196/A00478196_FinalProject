@@ -66,10 +66,8 @@ const Filter = ({ list, setFilteredList }) => {
       .then((res) => {
         // setSuccess(true)
         if (res?.status === 200) {
-          console.log(res);
           setFilteredList(res?.data);
           // setAllArts(res?.data)
-          console.log(res);
         }
 
         console.log(res);

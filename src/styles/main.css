@@ -487,3 +487,7 @@ input[type="date" i]{
   left:0;
   transform: rotate(-45deg);
 }
+
+.footer{
+  box-shadow: 1px -1px 7px rgb(0, 0, 0, 0.2);
+}

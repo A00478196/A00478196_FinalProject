@@ -11,7 +11,7 @@ import ErrorMessage from "../components/common/ErrorMessage";
 import Address from "../components/common/Address";
 import { generalForm } from "../helpers/validate";
 import instance from "../components/auth/axiosConfig";
-import { returnTimeOut } from "../helpers/common";
+import { returnTimeOut, showError } from "../helpers/common";
 import { decoded, token } from "../helpers/token";
 import SuccessMessage from "../components/common/SuccessMessage";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -212,14 +212,11 @@ const PaymentDetails = () => {
             cvv: "",
           });
 
-          setTimeout(()=>{
-            navigate('/bid-details')
-          },[1000])
+          navigate('/payment-successful')
         })
         .catch((err) => {
           setLoading(false);
-          console.log(err?.response?.data?.title)
-          setError(err?.response?.data?.title)
+          showError(err, setError)
         });
     } else {
       setLoading(false);

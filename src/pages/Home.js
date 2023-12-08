@@ -17,36 +17,42 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    instance
-      .get(`/UserPreference/user/${decoded?.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        if (res) {
-          res?.data?.map((cat) => {
-            setRecommendedCats((prevRecommendedCats) => {
-              // Use a set to efficiently check for duplicates
-              const catIdSet = new Set(prevRecommendedCats);
+    if (decoded?.id) {
+      instance
+        .get(`/UserPreference/user/${decoded?.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res) {
+            res?.data?.map((cat) => {
+              setRecommendedCats((prevRecommendedCats) => {
+                // Use a set to efficiently check for duplicates
+                const catIdSet = new Set(prevRecommendedCats);
 
-              // Add the new categoryId if it's not already present
-              catIdSet.add(cat?.categoryId);
+                // Add the new categoryId if it's not already present
+                catIdSet.add(cat?.categoryId);
 
-              // Convert the set back to an array
-              return [...catIdSet];
+                // Convert the set back to an array
+                return [...catIdSet];
+              });
             });
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    } else {
+      setLoading(false);
+    }
   }, [decoded?.id]);
 
   useEffect(() => {
-    setLoading(true);
     if (recommendedCats?.length > 0) {
+      setLoading(true);
+
       instance
         .post("/Artwork/filter", {
           categoryIds: recommendedCats,
@@ -191,6 +197,8 @@ const Home = () => {
           </div>
         </div>
       </Container>
+
+      
     </>
   );
 };

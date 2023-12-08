@@ -6,7 +6,7 @@ import { generalForm } from "../helpers/validate";
 import instance from "../components/auth/axiosConfig";
 import { Navigate, useNavigate } from "react-router-dom";
 import ErrorMessage from "../components/common/ErrorMessage";
-import { returnTimeOut } from "../helpers/common";
+import { returnTimeOut, showError } from "../helpers/common";
 
 const Login = () => {
   const [success, setSuccess] = useState("");
@@ -57,7 +57,7 @@ const Login = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         });
     } else {
       setLoading(false);
