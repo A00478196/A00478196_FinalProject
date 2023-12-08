@@ -118,8 +118,8 @@ const UserPreferences = () => {
       .then((res) => {
         setLoading(false);
         setSuccess("Preferences Added Successfully");
-        getUserPreference()
-        textStyle({ id: "", title: "" })
+        getUserPreference();
+        textStyle({ id: "", title: "" });
         // navigate("/");
       })
       .catch((err) => {
@@ -147,14 +147,14 @@ const UserPreferences = () => {
         // document.getElementById("deleteModal").classList.remove("show", "d-block");
         // document.querySelectorAll(".modal-backdrop")
         //         .forEach(el => el.classList.remove("modal-backdrop"));
-        getUserPreference()
+        getUserPreference();
       })
       .catch((err) => {
         setLoading(false);
         setError(err?.response?.data);
       });
 
-      returnTimeOut(setError, setSuccess)
+    returnTimeOut(setError, setSuccess);
   };
 
   return (
@@ -229,7 +229,8 @@ const UserPreferences = () => {
                               <td>{cat?.categoryName}</td>
                               {/* <td>{cat?.createdBy}</td> */}
                               <td>
-                                {cat?.createdOn && new Date(cat?.createdOn).toLocaleString()}
+                                {cat?.createdOn &&
+                                  new Date(cat?.createdOn).toLocaleString()}
                               </td>
                               <td className="text-center">
                                 <div class="btn-group dropend">

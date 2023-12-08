@@ -19,8 +19,7 @@ const BidDetails = () => {
         "/Bid/filter",
         {
           bidderId: decoded?.id,
-          // artworkId:1,
-          // successful: "false",
+         
         },
         {
           headers: {
@@ -31,9 +30,7 @@ const BidDetails = () => {
       .then((res) => {
         setLoading(false);
 
-        // console.log(res);
         setBidList(res?.data);
-        // getArt(res?.data)
       })
       .catch((err) => {
         setLoading(false);
@@ -135,7 +132,7 @@ const BidDetails = () => {
                   })
                 ) : (
                   <tr className="border text-center w-100 ">
-                    <EmptyMessage title="bids" className="w-100" />
+                    <EmptyMessage title="bids" className="w-100 fw-bold" />
                     <a
                       href="/browse-arts "
                       className="text-decoration-underline p-0 text-primary c-pointer pe-2"

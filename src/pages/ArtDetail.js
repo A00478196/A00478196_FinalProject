@@ -10,7 +10,6 @@ import LinkButton from "../components/common/LinkButton";
 import EmptyMessage from "../components/common/EmptyMessage";
 import { FaEye } from "react-icons/fa";
 
-
 const ArtDetail = () => {
   const [art, setArt] = useState({});
   const [personalBids, setPersonalBids] = useState([]);
@@ -130,33 +129,35 @@ const ArtDetail = () => {
               {art?.categoryName || "--"}
             </p>
             <p>
-              <span className=" fw-bold fw-9">Minimum Bid Price: </span>$
+              <span className=" fw-bold fw-9">Minimum Bid Price: </span>
               {art?.minimumBid || "--"}
             </p>
 
             <p>
-              <span className=" fw-bold fw-9">Current Highest Bid: </span>$
-              {art?.currentHighestBid || "--"}
+              <span className=" fw-bold fw-9">Current Highest Bid: </span>
+              {art?.currentHighestBid}
             </p>
-            <p>
-              <span className=" fw-bold fw-9">Auction Status: </span>
-              {
-                art?.status==="Sold" ?
-              
-              <span class="badge rounded-pill bg-danger text-dark text-white">
-                {" "}
-                {art?.status}
-              </span>
 
-              :
-              <span class="badge rounded-pill bg-warning text-dark">
-              {" "}
-              {art?.status}
-            </span>
-}
-            </p>
+            <div className="mt-0 mb-4">
+              <span className=" fw-bold fw-9">Auction Status: </span>
+              {art?.status === "Sold" ? (
+                <span class="badge rounded-pill bg-danger text-dark text-white">
+                  {" "}
+                  {art?.status}
+                </span>
+              ) : (
+                <span class="badge rounded-pill bg-warning text-dark">
+                  {" "}
+                  {art?.status}
+                </span>
+              )}
+            </div>
 
             <Modal bidState={art?.live === "true"} art={art} />
+            <p className="fw-8 mt-1">
+              <span className="fw-bold">Note: </span> You can only bid on a
+              artwork if the status is Active
+            </p>
 
             <div className="mt-4">
               <LinkButton
@@ -205,9 +206,12 @@ const ArtDetail = () => {
                         <>
                           <tr>
                             <td>{index + 1}</td>
-                            <td>{bid?.bidBy}</td>
+                            <td>{bid?.bidderName}</td>
                             <td>{bid?.bidAmount}</td>
-                            <td>{bid?.createdOn && new Date(bid?.createdOn)?.toLocaleString()}</td>
+                            <td>
+                              {bid?.createdOn &&
+                                new Date(bid?.createdOn)?.toLocaleString()}
+                            </td>
                           </tr>
                         </>
                       );
