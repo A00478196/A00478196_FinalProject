@@ -24,12 +24,14 @@ const Create = () => {
   const [error, setError] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     minimumBid: 0,
-    imageUrl:"https://images.pexels.com/photos/1193743/pexels-photo-1193743.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl:
+      "https://images.pexels.com/photos/1193743/pexels-photo-1193743.jpeg?auto=compress&cs=tinysrgb&w=600",
     sellerId: decoded?.id,
     categoryId: 1,
   });
@@ -56,7 +58,7 @@ const Create = () => {
       instance
         .post("/Artwork", formData, {
           headers: {
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => {
@@ -68,15 +70,14 @@ const Create = () => {
           setError("");
           setLoading(false);
 
-          setTimeout(()=>{
-            navigate('/arts/view')
-          },[900])
-
+          setTimeout(() => {
+            navigate("/arts/view");
+          }, [900]);
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data)
-        //   setError("Something went wrong");
+          setError(err?.response?.data);
+          //   setError("Something went wrong");
           setSuccess("");
           setLoading(false);
         });
@@ -111,13 +112,15 @@ const Create = () => {
         console.log(err);
       });
   }, []);
-  console.log(categories);
 
   const onCatChange = (val) => {
     let data = { ...formData };
     data["categoryId"] = val?.value;
     setFormData(data);
   };
+
+  const onImageChange = () => {};
+
   return (
     <>
       <div className="container-fluid p-0">
@@ -201,6 +204,15 @@ const Create = () => {
                             
                             name="Art"
                             /> */}
+                <div>
+                  <Input
+                    type="file"
+                    name="Art"
+                    accept="image/*"
+                    onClick={onImageChange}
+                  />
+                </div>
+
                 <div className="my-4">
                   <Button
                     text="Cancel"

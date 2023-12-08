@@ -6,11 +6,6 @@ import Logout from "../../pages/Logout";
 
 const Navbar = () => {
   const [user, setUser] = useState(false);
-  // useEffect(()=>{
-  //   isLoggedIn()?setUser(true):setUser(false)
-  //   // console.log("@user", user)
-
-  // },[token])
 
   const [isLoggedIn, setLoggedIn] = useState(() => {
     // Initialize state based on the presence of a token in localStorage
@@ -22,9 +17,6 @@ const Navbar = () => {
   useEffect(() => {
     isLoggedIn ? setUser(true) : setUser(false);
   }, [isLoggedIn]);
-
-  console.log("@navbar-isLoggedIn", isLoggedIn);
-  console.log("@navbar-user", user);
 
   return (
     <>

@@ -8,22 +8,51 @@ import instance from "../components/auth/axiosConfig";
 import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
+import { decoded, token } from "../helpers/token";
 
 const Home = () => {
-
-
-  const [recommendedCats, setRecommendedCats] = useState([1, 2, 3, 4]);
+  const [recommendedCats, setRecommendedCats] = useState([]);
   const [arts, setArts] = useState([]);
 
   useEffect(() => {
     instance
-      .post("/Artwork/filter", {
-        categoryIds: recommendedCats,
+      .get(`/UserPreference/user/${decoded?.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((res) => setArts(res?.data))
-      .catch((err) => console.log(err));
-  }, []);
-  // console.log("@arts", arts)
+      .then((res) => {
+        if (res) {
+          res?.data?.map((cat) => {
+            setRecommendedCats((prevRecommendedCats) => {
+              // Use a set to efficiently check for duplicates
+              const catIdSet = new Set(prevRecommendedCats);
+
+              // Add the new categoryId if it's not already present
+              catIdSet.add(cat?.categoryId);
+
+              // Convert the set back to an array
+              return [...catIdSet];
+            });
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [decoded?.id]);
+
+  useEffect(() => {
+    console.log(recommendedCats);
+    if (recommendedCats?.length > 0) {
+      instance
+        .post("/Artwork/filter", {
+          categoryIds: recommendedCats,
+        })
+        .then((res) => setArts(res?.data))
+        .catch((err) => console.log(err));
+    }
+  }, [recommendedCats]);
 
   var settings = {
     dots: true,
@@ -32,7 +61,7 @@ const Home = () => {
     infinite: true,
     centerPadding: "60px",
     slidesToShow: 3,
-    speed: 500
+    speed: 500,
   };
 
   const navigate = useNavigate();
@@ -121,11 +150,11 @@ const Home = () => {
                           }
                         >
                           <img width={250} height={200} src={art?.imageUrl} />
-                          {/* <div class="recommendedoverlay">
+                          <div class="recommendedoverlay">
                             <p className="text-white">
                               <a> {art?.title}</a>
                             </p>
-                          </div> */}
+                          </div>
                         </div>
                       );
                     })}
