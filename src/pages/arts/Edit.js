@@ -100,9 +100,10 @@ const Edit = () => {
           setSuccess("Art Edited Successfully!");
 
           setFormData({});
-          setFormErrors({});
+          setFormErrors({ });
           setLoading(false);
           setError("");
+          
           setTimeout(() => {
             navigate("/arts/view");
           }, [900]);
