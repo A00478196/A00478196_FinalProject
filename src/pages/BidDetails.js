@@ -17,9 +17,6 @@ const BidDetails = () => {
     instance
       .post(
         "/Bid/filter",
-
-        // decoded?.id === art?.sellerId
-
         {
           bidderId: decoded?.id,
           // artworkId:1,
@@ -141,11 +138,11 @@ const BidDetails = () => {
                     <EmptyMessage title="bids" className="w-100" />
                     <a
                       href="/browse-arts "
-                      className="text-decoration-underline p-0 text-primary c-pointer"
+                      className="text-decoration-underline p-0 text-primary c-pointer pe-2"
                     >
                       Browse our Arts
                     </a>{" "}
-                    to make your bid!
+                     to make your bid!
                   </tr>
                 )}
               </tbody>

@@ -4,7 +4,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import LinkButton from "../components/common/LinkButton";
 import Filter from "../components/common/Filter";
 import SectionHeader from "../components/common/SectionHeader";
-import instance from "../components/auth/axiosConfig";
+import instance, { baseURL } from "../components/auth/axiosConfig";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router";
 import EmptyMessage from "../components/common/EmptyMessage";
@@ -76,7 +76,7 @@ const ArtsCollection = () => {
                             <>
                               <div class="item hovereffect">
                                 <img
-                                  src={list?.imageUrl}
+                                  src={`${baseURL}/${list?.imageUrl}`}  
                                   style={{
                                     width: "100%",
                                     display: "block",

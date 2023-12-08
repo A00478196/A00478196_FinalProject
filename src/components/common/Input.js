@@ -2,7 +2,7 @@ import React from 'react'
 import { regexForLabels } from '../../helpers/common'
 
 const Input = (props) => {
-    let {type, placeholder, value, name, id, disabled, label, className, onChange} = props
+    let {type, placeholder, value, name, id, disabled, label, className, onChange, accept} = props
   return (
     <>
     <div class={`${className} mb-2`}>
@@ -24,6 +24,7 @@ const Input = (props) => {
             id={id}
             disabled={disabled?disabled:false}
             onChange={onChange}
+            accept={accept}
         
         />
         </div>
