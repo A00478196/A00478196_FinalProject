@@ -178,9 +178,10 @@ const PaymentDetails = () => {
     e.preventDefault();
     // console.log(formData)
     setLoading(true);
-    delete formData.bidId;
+    let tempData = {...formData}
+    delete tempData?.bidId
 
-    if (generalForm(formData, setFormErrors)) {
+    if (generalForm(tempData, setFormErrors)) {
       instance
         .post("/Transaction", 
         formData,
