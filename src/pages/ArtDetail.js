@@ -220,8 +220,6 @@ const ArtDetail = () => {
               // <p>You've already placed your bid on this art.</p>
             }
 
-          
-
             <div className="mt-4">
               <LinkButton
                 text="Continue Browsing"

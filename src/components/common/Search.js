@@ -20,7 +20,7 @@ const Search = ({ list, setFilteredList }) => {
 
         //return the item which contains the user input
         else {
-          return el.title?.toLowerCase().includes(inputText);
+          return (el.title?.toLowerCase().includes(inputText) || el.sellerName?.toLowerCase().includes(inputText))
         }
       })
     );

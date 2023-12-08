@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import LinkButton from "../../components/common/LinkButton";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import EmptyMessage from "../../components/common/EmptyMessage";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 
 const List = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const List = () => {
           // console.log("error")
           setError("Cannot load the Categories. Something wrong!");
         } else {
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         }
       });
     returnTimeOut(setError, setSuccess);

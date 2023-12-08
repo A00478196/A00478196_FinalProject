@@ -12,7 +12,7 @@ import { decoded, token } from "../../helpers/token";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import Button from "../../components/common/Button";
 import SuccessMessage from "../../components/common/SuccessMessage";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 import EmptyMessage from "../../components/common/EmptyMessage";
 
 const List = () => {
@@ -54,7 +54,7 @@ const List = () => {
       .catch((err) => {
         setLoading(false);
         setSuccess("");
-        setError(err?.response?.data?.title);
+        showError(err, setError)
       });
   };
   useEffect(() => {
@@ -104,9 +104,8 @@ const List = () => {
         setAuctionStopped({ id: id, auctionStopped: true });
       })
       .catch((err) => {
-        console.log(err);
         setSuccess("");
-        setError(err?.response?.data?.title);
+        showError(err, setError)
       });
 
     setTimeout(() => {

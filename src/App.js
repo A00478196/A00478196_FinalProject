@@ -31,6 +31,7 @@ import UserPreferences from "./pages/UserPreferences";
 import NotFound from "./pages/NotFound";
 import View from "./pages/user/View";
 import './components/auth/interceptor'
+import PaymentSuccessful from "./pages/PaymentSuccessful";
 
 function App() {
 
@@ -62,6 +63,10 @@ function App() {
 
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/payment-details" element={<PaymentDetails />}/>
+          </Route>
+
+          <Route exact path='/' element={<PrivateRoute/>}>
+            <Route path="/payment-successful" element={<PaymentSuccessful />}/>
           </Route>
           <Route path="/category" element={<ListCat />}/>
           <Route exact path='/' element={<PrivateRoute/>}>

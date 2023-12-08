@@ -12,7 +12,7 @@ import SuccessMessageMessage from "../components/common/SuccessMessage";
 
 import instance from "../components/auth/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import { returnTimeOut, scrollToElement } from "../helpers/common";
+import { returnTimeOut, scrollToElement, showError } from "../helpers/common";
 import Address from "../components/common/Address";
 import SuccessMessage from "../components/common/SuccessMessage";
 
@@ -82,7 +82,7 @@ const Register = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         });
     } else {
       setLoading(false);
@@ -91,7 +91,6 @@ const Register = () => {
         return scrollToElement(error);
       });
     }
-    console.log(formErrors)
 
     returnTimeOut(setError, setSuccess);
   };

@@ -9,7 +9,7 @@ import ErrorMessage from "../../components/common/ErrorMessage";
 import SuccessMessage from "../../components/common/SuccessMessage";
 import { useNavigate } from "react-router";
 import FormHeader from "../../components/common/FormHeader";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 
 const Create = () => {
   const navigate = useNavigate();
@@ -56,12 +56,10 @@ const Create = () => {
           setFormErrors({});
           setLoading(false);
           // navigate('/category')
-          console.log(res);
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title || err?.response?.data )
-          console.log(err?.response?.data);
+          showError(err, setError)
         });
     } else {
       setLoading(false);

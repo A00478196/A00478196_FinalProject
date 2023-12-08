@@ -6,13 +6,14 @@ import instance from "../components/auth/axiosConfig";
 import { decoded, token } from "../helpers/token";
 import SuccessMessage from "../components/common/SuccessMessage";
 import ErrorMessage from "../components/common/ErrorMessage";
-import { returnTimeOut } from "../helpers/common";
+import { returnTimeOut, showError } from "../helpers/common";
 import EmptyMessage from "../components/common/EmptyMessage";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
+import LinkButton from "../components/common/LinkButton";
 
 const UserPreferences = () => {
   const [defaultCat, setDefaultCat] = useState([]);
@@ -67,12 +68,11 @@ const UserPreferences = () => {
         if (err?.response?.status == 404) {
           setError("Cannot load the Categories. Something wrong!");
         } else {
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         }
         setSuccess("");
       });
   }, []);
-  console.log(defaultCat);
 
   const handleSelection = (text) => {
     let catDetail = { id: text?.id, title: text?.title };
@@ -127,7 +127,7 @@ const UserPreferences = () => {
         if (err?.response?.data?.title === "") {
           setError("Something went wrong with ther server!");
         } else {
-          setError(err?.response?.data?.title);
+          showError(err, setError)
         }
       });
 
@@ -313,6 +313,13 @@ const UserPreferences = () => {
                   </tbody>
                 </table>
               </div>
+
+              {
+                usersItems?.length > 0 && 
+
+                <LinkButton text="See your Recommendations" color="black" textColor="white" link="/"/>
+
+              }
             </div>
           </div>
         </div>

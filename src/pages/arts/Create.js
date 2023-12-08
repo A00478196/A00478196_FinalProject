@@ -14,7 +14,7 @@ import ReactSelect from "react-select";
 import SuccessMessage from "../../components/common/SuccessMessage";
 import { useNavigate } from "react-router";
 import FormHeader from "../../components/common/FormHeader";
-import { returnTimeOut } from "../../helpers/common";
+import { returnTimeOut, showError } from "../../helpers/common";
 
 const Create = () => {
   const navigate = useNavigate();
@@ -86,9 +86,8 @@ const Create = () => {
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data?.title);
+          showError(err, setError)
           setSuccess("");
-          setLoading(false);
         });
     } else {
       setLoading(false);
