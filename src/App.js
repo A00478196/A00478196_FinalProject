@@ -29,6 +29,8 @@ import { getLoggedUser, isLoggedIn } from "./helpers/auth";
 import BidDetails from "./pages/BidDetails";
 import UserPreferences from "./pages/UserPreferences";
 import NotFound from "./pages/NotFound";
+import View from "./pages/user/View";
+import './components/auth/interceptor'
 
 function App() {
 
@@ -37,7 +39,6 @@ function App() {
    
       <>
       <Navbar />
-
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />}/>
@@ -74,6 +75,10 @@ function App() {
           </Route>
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/user/preferences" element={<UserPreferences />} />
+          </Route>
+
+          <Route exact path='/' element={<PrivateRoute/>}>
+            <Route path="/user/view" element={<View />}/>
           </Route>
 
           <Route path='*' element={<NotFound />} />

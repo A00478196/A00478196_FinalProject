@@ -123,6 +123,14 @@ const Navbar = () => {
                     {decoded?.firstName}
                   </a>
                   <ul class="dropdown-menu fw-9" aria-labelledby="navbarDropdown">
+                  <li className="">
+                      <NavLink
+                        className={"dropdown-item"}
+                        to="/user/view"
+                      >
+                        Profile
+                      </NavLink>
+                    </li>
                     <li className="">
                       <NavLink
                         className={"dropdown-item"}

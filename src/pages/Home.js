@@ -59,7 +59,7 @@ const Home = () => {
     centerMode: true,
     infinite: true,
     centerPadding: "60px",
-    slidesToShow: 3,
+    slidesToShow: recommendedCats?.length>4? 3:1,
     swipeToSlide: true,
     speed: 500,
   };

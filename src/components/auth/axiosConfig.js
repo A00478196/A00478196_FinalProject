@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'https://localhost:7006/'
+export const baseURL = 'https://arthub5510.azurewebsites.net/'
 //  export const baseURL = '/'
 
 const instance = axios.create({
