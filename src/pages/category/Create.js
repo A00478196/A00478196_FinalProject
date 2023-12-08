@@ -13,16 +13,13 @@ import { returnTimeOut } from "../../helpers/common";
 
 const Create = () => {
   const navigate = useNavigate();
-
   const [error, setError] = useState("");
-
   const [success, setSuccess] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
-    // createdBy:JSON.stringify(decoded?.id)
     createdBy: decoded?.id,
   });
 
@@ -38,7 +35,6 @@ const Create = () => {
     setFormData(data);
     setFormErrors(errors);
   };
-  console.log(decoded);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -64,7 +60,8 @@ const Create = () => {
         })
         .catch((err) => {
           setLoading(false);
-          console.log(err);
+          setError(err?.response?.data?.title || err?.response?.data )
+          console.log(err?.response?.data);
         });
     } else {
       setLoading(false);
@@ -79,6 +76,7 @@ const Create = () => {
             <div className="col-lg-6 col-md-8 col-sm-12 mx-auto">
               <div className="form-container mt-4 pt-4 border border-1 p-4 rounded-3">
                 <SuccessMessage message={success} className="mb-2" />
+                <ErrorMessage message={error}/>
                 <FormHeader message={"Create Category"} />
                 <form>
                   <Input

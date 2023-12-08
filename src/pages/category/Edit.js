@@ -55,28 +55,15 @@ const Edit = () => {
     fData["id"] = data?.id;
 
     setFormData(fData);
-    // if(data!==""){
-    //     instance.get(`/Category/${data}`, {
-    //         headers:{
-    //             "Authorization":`Bearer ${token}`
-    //         }
-    //     }).then((res)=>{
-    //         if(res?.status===200){
-    //             res?.data && setCategory(res?.data)
-
-    //         }
-    //         console.log(res)
-    //     }).catch((err)=>{
-    //         console.log(err)
-    //     })
-    // }
+    
   }, [data]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(formData)
 
-    if (generalForm(formData, setFormErrors)) {
+    if (formData?.title!=="") {
       instance
         .put(`/Category`, formData, {
           headers: {
@@ -87,21 +74,17 @@ const Edit = () => {
           if (res?.status === 200) {
             setSuccess("Category edited Successfully!");
           }
-          setFormData({});
+          setFormData({title:""});
           setFormErrors({});
           setLoading(false);
-          console.log(res);
-          setTimeout(()=>{
-            navigate('/category')
-
-          },[900])
+          
         })
         .catch((err) => {
           setLoading(false);
-          setError("Something went wrong!");
-          console.log(err);
+          setError(err?.response?.data?.title);
         });
     }else{
+      setFormErrors({title:"Title is required"})
         setLoading(false)
     }
     returnTimeOut(setError, setSuccess);

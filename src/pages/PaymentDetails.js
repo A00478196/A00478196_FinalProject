@@ -14,7 +14,7 @@ import instance from "../components/auth/axiosConfig";
 import { returnTimeOut } from "../helpers/common";
 import { decoded, token } from "../helpers/token";
 import SuccessMessage from "../components/common/SuccessMessage";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PaymentDetails = () => {
   const [success, setSuccess] = useState("");
@@ -44,7 +44,8 @@ const PaymentDetails = () => {
     cvvError: "",
   });
 
-  console.log(state)
+  const navigate = useNavigate()
+  // console.log(state)
   useEffect(()=>{
     setFormData((formData) => ({
       ...formData,
@@ -54,7 +55,6 @@ const PaymentDetails = () => {
   const [loading, setLoading] = useState(false);
 
   const validateExpirationDate = (expirationMonth, expirationYear) => {
-    console.log(expirationMonth);
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; // January is 0
@@ -178,6 +178,7 @@ const PaymentDetails = () => {
     e.preventDefault();
     // console.log(formData)
     setLoading(true);
+    delete formData.bidId;
 
     if (generalForm(formData, setFormErrors)) {
       instance
@@ -195,11 +196,29 @@ const PaymentDetails = () => {
           }
           setLoading(false);
           setError("");
+          setFormData({
+            bidId: 1,
+            sameAsUser: false,
+            cardHolderFirstName: "",
+            cardHolderLastName: "",
+            city: "",
+            state: "",
+            country: "",
+            postalCode: "",
+            cardType: "",
+            cardNumber: "",
+            expiryDate: "",
+            cvv: "",
+          });
+
+          setTimeout(()=>{
+            navigate('/bid-details')
+          },[1000])
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data)
-          console.log(err);
+          console.log(err?.response?.data?.title)
+          setError(err?.response?.data?.title)
         });
     } else {
       setLoading(false);

@@ -63,18 +63,17 @@ const Modal = (props) => {
           },
         })
         .then((res) => {
-          console.log(res);
           setSuccess("Bid Added Successfully!");
-
-          // document.getElementById("exampleModal").innerHTML = "";
-          setFormData({ bidAmount: "" });
+          setFormData({ bidAmount: 0 });
           setFormErrors({});
           setError("");
           setLoading(false);
+          navigate(`/art-details/${art?.id}`, {state:art})
+          props?.filterBidByArtAndUser()
         })
         .catch((err) => {
           setLoading(false);
-          setError(err?.response?.data);
+          setError(err?.response?.data?.title);
           setSuccess("");
           setLoading(false);
           console.log(err);
@@ -96,6 +95,10 @@ const Modal = (props) => {
           >
             Bid on Art
           </button>
+          <p className="fw-8 mt-1 fst-italic">
+              <span className="fw-bold">Note: </span> You can only bid on a
+              artwork if the status is Active
+            </p>
 
           <div
             class="modal fade"
@@ -151,6 +154,10 @@ const Modal = (props) => {
                       Close
                     </button>
 
+                    {
+                      props?.hasBidPreviously?
+                      <button class="btn text-white bg-white p-3" disabled={true} >Bid</button>
+                      :
                     <Button
                       text="Bid"
                       color="black"
@@ -158,6 +165,8 @@ const Modal = (props) => {
                       disabled={loading}
                       onClick={onSubmit}
                     />
+                    }
+                    
                   </div>
                 </form>
               </div>
