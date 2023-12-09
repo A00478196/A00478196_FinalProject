@@ -9,7 +9,7 @@ import Button from "../components/common/Button";
 import Checkbox from "../components/common/Checkbox";
 import ErrorMessage from "../components/common/ErrorMessage";
 import Address from "../components/common/Address";
-import { generalForm } from "../helpers/validate";
+import { generalForm, validateForm } from "../helpers/validate";
 import instance from "../components/auth/axiosConfig";
 import { returnTimeOut, showError } from "../helpers/common";
 import { decoded, token } from "../helpers/token";
@@ -20,8 +20,8 @@ const PaymentDetails = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
-  const location = useLocation()
-  const state = location?.state
+  const location = useLocation();
+  const state = location?.state;
 
   const [cardType, setCardType] = useState("");
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const PaymentDetails = () => {
     cardHolderFirstName: "",
     cardHolderLastName: "",
     city: "",
-    state: "",
+    province: "",
     country: "",
     postalCode: "",
     cardType: "",
@@ -44,14 +44,14 @@ const PaymentDetails = () => {
     cvvError: "",
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // console.log(state)
-  useEffect(()=>{
+  useEffect(() => {
     setFormData((formData) => ({
       ...formData,
       bidId: state?.id,
     }));
-  },[state])
+  }, [state]);
   const [loading, setLoading] = useState(false);
 
   const validateExpirationDate = (expirationMonth, expirationYear) => {
@@ -101,14 +101,17 @@ const PaymentDetails = () => {
       visa: /^4[0-9]{15}$/,
       mastercard: /^5[1-5][0-9]{14}$/,
       amex: /^3[47][0-9]{13}$/,
+
+    
     };
 
     for (const type in patterns) {
       if (patterns[type].test(cardNumber)) {
-        console.log(cardNumber);
+        // console.log(cardNumber);
 
         return type;
       }
+      
     }
 
     return "Unknown";
@@ -174,24 +177,36 @@ const PaymentDetails = () => {
     }
   };
 
+  const onChange = (e) => {
+    let { name, value } = e?.target;
+
+    let data = { ...formData };
+    let errors = { ...formErrors };
+
+    data[name] = value;
+    errors[name] = "";
+
+    setFormData(data);
+    setFormErrors(errors);
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     // console.log(formData)
-    setLoading(true);
-    let tempData = {...formData}
-    delete tempData?.bidId
+    // setLoading(true);
+    let tempData = { ...formData };
+    delete tempData?.bidId;
+    delete tempData?.sameAsUser;
 
+  
     if (generalForm(tempData, setFormErrors)) {
       instance
-        .post("/Transaction", 
-        formData,
-        {
-          headers:{
-              "Authorization":`Bearer ${token}`
-          }
-      })
+        .post("/Transaction", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
-          console.log(res);
           if (res?.status === 200) {
             setSuccess("Transaction Added Successfully!");
           }
@@ -212,80 +227,92 @@ const PaymentDetails = () => {
             cvv: "",
           });
 
-          navigate('/payment-successful')
+          navigate("/payment-successful");
         })
         .catch((err) => {
           setLoading(false);
-          showError(err, setError)
+          showError(err, setError);
         });
     } else {
-      setLoading(false);
+      console.log(formErrors)
+      // setLoading(false);
     }
 
     returnTimeOut(setError, setSuccess);
   };
 
-  const onChange = (e) => {
-    let { name, value } = e?.target;
-
-    let data = { ...formData };
-    let errors = { ...formErrors };
-
-    data[name] = value;
-    errors[name] = "";
-
-    setFormData(data);
-    setFormErrors(errors);
-
-    if (name === "sameAsUser") {
-      if (e?.target?.checked) {
-        // setSameAsUser(true)
-        getUserInfo();
-      } else {
-        // setSameAsUser(false)
-
-        setFormData((formData) => ({
-          ...formData,
-          cardHolderFirstName: "",
-          cardHolderLastName: "",
-          sameAsUser: false,
-        }));
-        errors[name] = "";
-        data[name] = value;
-        setFormData(data);
-      }
-    }
-  };
-
   useEffect(() => {
     if (cardType !== "") {
-      setFormData((formData) => ({ ...formData, cardType: cardType }));
+      setFormData((formData) => ({
+        ...formData,
+        cardType: cardType,
+        
+      }));
+      // setFormData({
+      //   bidId: 1,
+      //   sameAsUser: false,
+      //   cardHolderFirstName: "",
+      //   cardHolderLastName: "",
+      //   city: "",
+      //   state: "",
+      //   country: "",
+      //   postalCode: "",
+      //   cardType: "",
+      //   cardNumber: "",
+      //   expiryDate: "",
+      //   cvv: "",
+      // });
     }
   }, [cardType]);
 
   const getUserInfo = () => {
-        instance.get(`/user/${decoded?.id}`, {
-            headers:{
-                "Authorization":`Bearer ${token}`
-            }
-        })
-        .then((res)=>
-        // console.log(res)
-          setFormData((formData) => ({
-            ...formData,
-            sameAsUser: true,
-            cardHolderFirstName: res?.data?.firstName,
-            cardHolderLastName: res?.data?.lastName,
-            city: res?.data?.city,
-            state: res?.data?.province,
-            country: res?.data?.country,
-            postalCode: res?.data?.postalCode,
-          }))
-          )
-        .catch((err)=>console.log(err))
+    instance
+      .get(`/user/${decoded?.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setSameUser(true);
 
+        // console.log(res)
+        setFormData((formData) => ({
+          ...formData,
+          sameAsUser: sameUser,
+          cardHolderFirstName: res?.data?.firstName,
+          cardHolderLastName: res?.data?.lastName,
+          city: res?.data?.city,
+          province: res?.data?.province,
+          country: res?.data?.country,
+          postalCode: res?.data?.postalCode,
+        }));
+      })
+      .catch((err) => console.log(err));
   };
 
+  const [sameUser, setSameUser] = useState(false);
+
+  const onUserChange = () => {
+    setSameUser(!sameUser);
+  };
+
+  useEffect(() => {
+    if (sameUser) {
+      getUserInfo();
+    } else {
+      setSameUser(false);
+      setFormData((formData) => ({
+        ...formData,
+        sameAsUser: sameUser,
+        cardHolderFirstName: "",
+        cardHolderLastName: "",
+        city: "",
+        province: "",
+        country: "",
+        postalCode: "",
+      }));
+    }
+  }, [sameUser]);
   return (
     <>
       <Container>
@@ -298,18 +325,14 @@ const PaymentDetails = () => {
 
             {/* <SectionHeader c/> */}
             <form className="border p-3 rounded">
-              {
-                success && <SuccessMessage message={success}/>
-              }
-               {
-                error && <ErrorMessage message={error}/>
-              }
+              {success && <SuccessMessage message={success} />}
+              {error && <ErrorMessage message={error} />}
               <div className="user-details border-bottom pb-3">
                 <Checkbox
                   label={"Same as user?"}
                   className="py-2"
                   name="sameAsUser"
-                  onChange={onChange}
+                  onChange={onUserChange}
                 />
                 <div className="row">
                   <div className="col-lg-6">
@@ -330,8 +353,8 @@ const PaymentDetails = () => {
                       value={formData?.cardHolderFirstName}
                       disabled={formData?.sameAsUser ? true : false}
                     />
-                    {formErrors?.firstName && (
-                      <ErrorMessage message={formErrors?.firstName} />
+                    {formErrors?.cardHolderFirstName && (
+                      <ErrorMessage message={formErrors?.cardHolderFirstName} />
                     )}
                   </div>
 
@@ -353,8 +376,8 @@ const PaymentDetails = () => {
                       value={formData?.cardHolderLastName}
                       disabled={formData?.sameAsUser ? true : false}
                     />
-                    {formErrors?.lastName && (
-                      <ErrorMessage message={formErrors?.lastName} />
+                    {formErrors?.cardHolderFirstName && (
+                      <ErrorMessage message={formErrors?.cardHolderFirstName} />
                     )}
                   </div>
                 </div>
@@ -374,12 +397,12 @@ const PaymentDetails = () => {
 
                     <Input
                       type="text"
-                      id="state"
-                      name="state"
-                      label="State"
+                      id="province"
+                      name="province"
+                      label="Province"
                       placeholder=""
                       onChange={onChange}
-                      value={formData?.state}
+                      value={formData?.province}
                       disabled={true}
                     />
                     <Input
@@ -483,7 +506,7 @@ const PaymentDetails = () => {
                   name="cvv"
                   id="cvv"
                   placeholder="0000"
-                className="mt-0"
+                  className="mt-0"
                   label={true}
                   onChange={onCvvChange}
                   disabled={cardType === "" ? true : false}
@@ -494,7 +517,7 @@ const PaymentDetails = () => {
               </div>
 
               <Button
-              className="mt-4"
+                className="mt-4"
                 text="Save"
                 color="black"
                 textColor="white"

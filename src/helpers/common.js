@@ -2,7 +2,7 @@ export const returnTimeOut = (setSuccess, setError) => {
   setTimeout(() => {
     setSuccess("");
     setError("");
-  }, [5000]);
+  }, [8000]);
 };
 
 export const regexForLabels = (name) => {
@@ -26,9 +26,14 @@ export const scrollToElement = (id) => {
 };
 
 export const showError = (err, setError) =>{
-  if(err?.response?.data){
-    setError(err?.response?.data);
-  }else{
-    setError(err?.response?.data?.title);
+  if(err?.response){
+    console.log(err?.response)
+    console.log(typeof (err?.response?.data))
+    if(typeof (err?.response?.data)==="string"){
+      setError(err?.response?.data)
+
+    }else{
+      setError(err?.response?.data?.title);
+    }
   }
 }

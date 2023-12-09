@@ -145,6 +145,7 @@ const List = () => {
                     <th scope="col">Name</th>
                     <th scope="col">Art</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Uploaded Date</th>
                     {/* <td scope="col">Live</td> */}
                     <th scope="col">Status</th>
@@ -176,6 +177,8 @@ const List = () => {
                             />
                           </td>
                           <td>{art?.description || "--"}</td>
+                          {/* <td>{art?.categoryName}</td> */}
+                          <td>{art?.categoryName===null?'--':art?.categoryName}</td>
                           <td>
                             {(art?.createdOn &&
                               new Date(art?.createdOn).toLocaleString()) ||
@@ -244,7 +247,7 @@ const List = () => {
                                   className=""
                                   onClick={() =>
                                     navigate(`/art-detail/${art?.id}`, {
-                                      state: art?.id,
+                                      state: art,
                                     })
                                   }
                                 >

@@ -46,11 +46,11 @@ function App() {
           <Route exact path="/login" element={<Login />}/>
           <Route exact path="/register" element={<Register />}/>
           <Route exact path="/browse-arts" element={<ArtsCollection />}/>
-         
+          <Route path="/art-detail/:id" element={<ArtDetail />}/>
+
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route path="/arts/create" element={<Create/>}/>
           </Route>
-          <Route path="/art-detail/:id" element={<ArtDetail />}/>
 
           {/* <Route exact path='/' element={<PrivateRoute/>}>
           </Route> */}

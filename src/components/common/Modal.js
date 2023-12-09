@@ -68,7 +68,11 @@ const Modal = (props) => {
           setFormErrors({});
           setError("");
           setLoading(false);
-          navigate(`/art-detail/${art?.id}`, {state:art})
+          setTimeout(()=>{
+            window.location.reload()
+          },[30])
+          // window.location.reload()
+          // navigate(`/art-detail/${art?.id}`, {state:art})
           props?.filterBidByArtAndUser()
         })
         .catch((err) => {

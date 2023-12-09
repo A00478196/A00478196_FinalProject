@@ -79,7 +79,7 @@ const Filter = ({ list, setFilteredList }) => {
   };
 
   const statusChange = (e) => {
-    console.log(e.target.checked);
+    // console.log(e.target.checked);
     e.target.checked ? setSelectedStatus(1) : setSelectedStatus(0);
   };
 
@@ -117,7 +117,7 @@ const Filter = ({ list, setFilteredList }) => {
             id="flexSwitchCheckChecked"
           />
           <label class="form-check-label" for="flexSwitchCheckChecked">
-            Sold
+            Live
           </label>
         </div>
       </div>

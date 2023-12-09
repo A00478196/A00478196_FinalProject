@@ -68,7 +68,7 @@ const UserPreferences = () => {
         if (err?.response?.status == 404) {
           setError("Cannot load the Categories. Something wrong!");
         } else {
-          showError(err, setError)
+          showError(err, setError);
         }
         setSuccess("");
       });
@@ -127,7 +127,7 @@ const UserPreferences = () => {
         if (err?.response?.data?.title === "") {
           setError("Something went wrong with ther server!");
         } else {
-          showError(err, setError)
+          showError(err, setError);
         }
       });
 
@@ -146,6 +146,9 @@ const UserPreferences = () => {
       .then((res) => {
         setLoading(false);
         setSuccess("Preference Deleted Successfully!");
+        setTimeout(()=>{
+          window.location.reload()
+        },[30])
         getUserPreference();
       })
       .catch((err) => {
@@ -314,12 +317,14 @@ const UserPreferences = () => {
                 </table>
               </div>
 
-              {
-                usersItems?.length > 0 && 
-
-                <LinkButton text="See your Recommendations" color="black" textColor="white" link="/"/>
-
-              }
+              {usersItems?.length > 0 && (
+                <LinkButton
+                  text="See your Recommendations"
+                  color="black"
+                  textColor="white"
+                  link="/"
+                />
+              )}
             </div>
           </div>
         </div>

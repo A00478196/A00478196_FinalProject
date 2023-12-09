@@ -65,22 +65,22 @@ const Register = () => {
     const newData = new FormData()
     formData && Object.keys(formData).map((data)=>{
       newData.append(data, formData[data])
-    
     })
     
-    if (validateForm(formData, setFormErrors), {
-      headers: {
-        'content-type': 'multipart/form-data'
-      },
-    }) {
+    if (validateForm(formData, setFormErrors)) {
       instance
-        ?.post("/User", newData)
+        ?.post("/User", newData, {
+          headers: {
+            'content-type': 'multipart/form-data'
+          },
+        })
         .then((res) => {
           setSuccess(true);
           setLoading(false);
           navigate("/login");
         })
         .catch((err) => {
+          console.log(err?.response)
           setLoading(false);
           showError(err, setError)
         });
@@ -91,7 +91,6 @@ const Register = () => {
         return scrollToElement(error);
       });
     }
-
     returnTimeOut(setError, setSuccess);
   };
 

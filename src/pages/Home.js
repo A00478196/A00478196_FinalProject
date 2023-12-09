@@ -163,7 +163,7 @@ const Home = () => {
                           className="recommendedHover"
                           onClick={() =>
                             navigate(`/art-detail/${art?.id}`, {
-                              state: art?.id,
+                              state: art,
                             })
                           }
                         >
@@ -197,8 +197,6 @@ const Home = () => {
           </div>
         </div>
       </Container>
-
-      
     </>
   );
 };

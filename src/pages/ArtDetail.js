@@ -170,8 +170,9 @@ const ArtDetail = () => {
 
             <p style={{cursor:"pointer"}} className="mt-1" onClick={()=>navigate(`/browse-arts`, {state:{sellerId:art?.sellerId, sellerName:art?.sellerName}})}>
               <span className=" fw-bold fw-9">By: </span>
-              
+              <span className=" text-decoration-underline">
               {art?.sellerName || "--"}
+              </span>
             </p>
 
             <p className="mt-4">

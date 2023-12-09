@@ -21,7 +21,7 @@ export const validateForm = (data, setFormErrors)=>{
             let key = formD
             let val = data[formD]
             if(val!==undefined ){
-                if( !val ){
+                if( val=="" ){
                     errors[key] = `${formD} is required`
                 }
             }else{
@@ -72,19 +72,18 @@ export const validateForm = (data, setFormErrors)=>{
 
 export const generalForm = (data, setFormErrors)=>{
     const errors = {};
-
     if(data){
         Object.keys(data)?.map((formD)=>{
             let key = formD
             let val = data[formD]
+
             if(val!==undefined ){
-                if( !val ){
+                if( val=="" ){
                     errors[key] = `${formD} is required`
                 }
             }else{
                 errors[key] = `${formD} is required`
             }
-        
         })
     }
     setFormErrors(errors);
