@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# ArtHub# ArtHub: Software Development Master's Project at Saint Mary's University
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+Welcome to the GitHub repository for ArtHub, an innovative art auction platform. This project is a part of our Master's coursework in Software Development (5510) at Saint Mary's University. Our team consists of three dedicated members: Neeyati Mehta, Kritika Korila, Pranay Malusare
+## About ArtHub
 
-In the project directory, you can run:
+ArtHub is a unique auction platform designed for artists and art collectors. It serves as a marketplace where artists can sell their artwork through auctions, and buyers can bid on their favorite pieces. Key features of ArtHub include:
 
-### `npm start`
+- **Artist Control**: Artists can start and stop auctions at their convenience.
+- **User Engagement**: Allows users to bid on art pieces and engage with artists.
+- **Auction Closure**: The highest bid at the end of the auction wins, leading to a straightforward payment process.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Highlights
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Ease of Use**: The platform is designed to be simple and easy to navigate.
+- **Focus on Artists**: ArtHub prioritizes showcasing artists and their work.
+- **Interactive Auctions**: The live auction system enhances user engagement.
 
-### `npm test`
+## Technical Framework
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Front-End**: Developed using React, providing a responsive and engaging user interface.
+- **Back-End**: Constructed with the MVC model in C#, ensuring a strong and scalable system.
+- **Database and Deployment**: Utilizing MSSQL for database management and deployed on Azure for reliability.
 
-### `npm run build`
+## Future Developments
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We plan to expand ArtHub with additional features, such as:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Admin Dashboard**: For better platform management.
+- **Payment Gateway Integration**: To streamline transactions.
+- **UI/UX Enhancements**: Continual improvements for a better user experience.
+- **Analytics Features**: To offer insights into auction trends.
+- **Community Building**: To foster connections among users and artists.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Conclusion
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ArtHub represents our commitment and skills in creating a platform that not only connects artists with collectors but also enriches the art buying experience. We invite you to explore our repository and engage with ArtHub.
